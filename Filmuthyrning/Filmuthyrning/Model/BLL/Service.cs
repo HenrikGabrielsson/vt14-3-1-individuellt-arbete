@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 using Filmuthyrning.Model.DAL;
 
 namespace Filmuthyrning.Model.BLL
@@ -34,8 +35,18 @@ namespace Filmuthyrning.Model.BLL
         //skapa / uppdatera kund
         public int SaveCustomer(Customer customer)
         {
+            //validering
+            //i denna lista sparas alla fel efter att extensionmetoden "Validate" körs
+            ICollection<ValidationResult> valResults;
+            if(!customer.Validate(out valResults)) //om valideringen misslyckas
+            {
+                var ex = new ValidationException("Kunden klarade inte valideringen");
+                ex.Data.Add("ValidationResult", valResults);
+                throw ex;
+            }
+
             //ny kund (skickar tillbaka customerID)
-            if(customer.CustomerID == null)
+            if(customer.CustomerID == 0)
             {
                 return CustomerDAL.NewCustomer(customer);
             }
@@ -53,7 +64,6 @@ namespace Filmuthyrning.Model.BLL
             //skickar tillbaka antal ändrade rader
             return CustomerDAL.DeleteCustomer(customerID);
         }
-
 
 
 
@@ -80,8 +90,18 @@ namespace Filmuthyrning.Model.BLL
         //skapa / uppdatera Uthyrning
         public int SaveRental(Rental rental)
         {
+            //validering
+            //i denna lista sparas alla fel efter att extensionmetoden "Validate" körs
+            ICollection<ValidationResult> valResults;
+            if (!rental.Validate(out valResults)) //om valideringen misslyckas
+            {
+                var ex = new ValidationException("Uthyrningen klarade inte valideringen");
+                ex.Data.Add("ValidationResult", valResults);
+                throw ex;
+            }
+
             //ny uthyrning (skickar tillbaka rentalID)
-            if (rental.RentalID == null)
+            if (rental.RentalID == 0)
             {
                 return RentalDAL.NewRental(rental);
             }
@@ -100,6 +120,8 @@ namespace Filmuthyrning.Model.BLL
             return RentalDAL.DeleteRental(rentalID);
         }
        
+
+
 
         //Funktioner för filmer
         //hämta alla filmer
