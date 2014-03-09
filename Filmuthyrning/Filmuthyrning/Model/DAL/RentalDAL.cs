@@ -23,8 +23,10 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getRentalsCmd = new SqlCommand("appSchema.getUthyrningar", conn);
+                    SqlCommand getRentalsCmd = new SqlCommand("appSchema.usp_getUthyrningar", conn);
                     getRentalsCmd.CommandType = CommandType.StoredProcedure;
+
+                    conn.Open();
 
                     using (SqlDataReader reader = getRentalsCmd.ExecuteReader())
                     {
@@ -32,7 +34,10 @@ namespace Filmuthyrning.Model.DAL
                         //hämta alla index i tabeller
                         int rentalIDIndex = reader.GetOrdinal("UthyrningID");
                         int movieIDIndex = reader.GetOrdinal("FilmID");
+                        int titleIndex = reader.GetOrdinal("Titel");
                         int customerIDIndex = reader.GetOrdinal("KundID");
+                        int firstNameIndex = reader.GetOrdinal("Förnamn");
+                        int lastNameIndex = reader.GetOrdinal("Efternamn");
                         int rentalDateindex = reader.GetOrdinal("HyrDatum");
 
                         //hämtar varje tabellrad för sig
@@ -42,8 +47,11 @@ namespace Filmuthyrning.Model.DAL
                             Rental rental = new Rental();
                             rental.RentalID = reader.GetInt32(rentalIDIndex);
                             rental.MovieID = reader.GetInt32(movieIDIndex);
+                            rental.MovieTitle = reader.GetString(titleIndex);
                             rental.CustomerID = reader.GetInt32(customerIDIndex);
-                            rental.RentalDate = reader.GetString(rentalDateindex);
+                            rental.firstName = reader.GetString(firstNameIndex);
+                            rental.lastName = reader.GetString(lastNameIndex);
+                            rental.RentalDate = reader.GetDateTime(rentalDateindex).ToString();
 
 
                             rentals.Add(rental);
@@ -72,7 +80,7 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getRentalByIDCmd = new SqlCommand("appSchema.getUthyrningByID", conn);
+                    SqlCommand getRentalByIDCmd = new SqlCommand("appSchema.usp_getUthyrningByID", conn);
                     getRentalByIDCmd.CommandType = CommandType.StoredProcedure;
 
                     getRentalByIDCmd.Parameters.Add("@UthyrningID", SqlDbType.Int, 4).Value = rentalID;
@@ -85,15 +93,21 @@ namespace Filmuthyrning.Model.DAL
                         //hämta alla index i tabeller
                         int rentalIDIndex = reader.GetOrdinal("UthyrningID");
                         int movieIDIndex = reader.GetOrdinal("FilmID");
+                        int titleIndex = reader.GetOrdinal("Titel");
                         int customerIDIndex = reader.GetOrdinal("KundID");
+                        int firstNameIndex = reader.GetOrdinal("Förnamn");
+                        int lastNameIndex = reader.GetOrdinal("Efternamn");
                         int rentalDateindex = reader.GetOrdinal("HyrDatum");
 
                         if (reader.Read())
                         {
                             rental.RentalID = reader.GetInt32(rentalIDIndex);
                             rental.MovieID = reader.GetInt32(movieIDIndex);
+                            rental.MovieTitle = reader.GetString(titleIndex);
                             rental.CustomerID = reader.GetInt32(customerIDIndex);
-                            rental.RentalDate = reader.GetString(rentalDateindex);
+                            rental.firstName = reader.GetString(firstNameIndex);
+                            rental.lastName = reader.GetString(lastNameIndex);
+                            rental.RentalDate = reader.GetDateTime(rentalDateindex).ToString();
 
                             
                         }
@@ -107,67 +121,7 @@ namespace Filmuthyrning.Model.DAL
             }
         }
 
-        public IEnumerable<Rental> GetRentalsPagewise(int maxRows, int startIndex, out int totalRowCount)
-        {
 
-            try
-            {
-
-                //här ska uthyrningarna som kommer tillbaka sparas
-                List<Rental> rentals = new List<Rental>(maxRows);
-
-                //anslutningen skapas
-                using(SqlConnection conn = CreateConnection())
-                {
-                    //den lagrade proceduren som ska användas.
-                    SqlCommand getRentalsPagewiseCmd = new SqlCommand("appSchema.getUthyrningarPagewise", conn);
-                    getRentalsPagewiseCmd.CommandType = CommandType.StoredProcedure;
-
-                    //Skickar med alla parametrar
-                    getRentalsPagewiseCmd.Parameters.Add("@MaxAntal", SqlDbType.Int, 4).Value = maxRows;
-                    getRentalsPagewiseCmd.Parameters.Add("@StartIndex", SqlDbType.Int, 4).Value = startIndex;
-
-                    //en outparameter
-                    getRentalsPagewiseCmd.Parameters.Add("@totalRowCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
-
-                    conn.Open();
-
-                    //Läser ut raderna från tabellen en efter en.
-                    using (SqlDataReader reader = getRentalsPagewiseCmd.ExecuteReader())
-                    {
-                        int rentalIDIndex = reader.GetOrdinal("UthyrningID");
-                        int movieIDIndex = reader.GetOrdinal("FilmID");
-                        int customerIDIndex = reader.GetOrdinal("KundID");
-                        int rentalDateindex = reader.GetOrdinal("HyrDatum");
-
-                        //medan det fortfarande finns rader som kan läsas...
-                        while(reader.Read())
-                        {
-                            //skapar ett nytt uthyrningsobjekt och lägger till det i listan som returneras.
-                            Rental rental = new Rental();
-                            rental.RentalID = reader.GetInt32(rentalIDIndex);
-                            rental.MovieID = reader.GetInt32(movieIDIndex);
-                            rental.CustomerID = reader.GetInt32(customerIDIndex);
-                            rental.RentalDate = reader.GetString(rentalDateindex);
-
-                            rentals.Add(rental);
-                            
-                        }
-
-                        //out-parametern ges antalet rader totalt i tabellen och listan returneras.
-                        totalRowCount = (int)getRentalsPagewiseCmd.Parameters["@totalRowCount"].Value;
-                        rentals.TrimExcess();
-                        return rentals.AsEnumerable();
-                    }
-                }
-
-            }
-            catch
-            {
-                throw new ApplicationException("An error occurred when accessing the database.");
-            }
-            throw new NotImplementedException();
-        }
 
         //funktion som lägger till en ny uthyrning 
         public int NewRental(Rental newRental)
@@ -177,7 +131,7 @@ namespace Filmuthyrning.Model.DAL
                 //Anslutningen som används för att kommunicera med databasen
                 using (SqlConnection conn = CreateConnection())
                 {
-                    SqlCommand newRentalCmd = new SqlCommand("appSchema.newUthyrning", conn);
+                    SqlCommand newRentalCmd = new SqlCommand("appSchema.usp_newUthyrning", conn);
                     newRentalCmd.CommandType = CommandType.StoredProcedure;
 
                     //Parametrar som måste fyllas i
@@ -216,7 +170,7 @@ namespace Filmuthyrning.Model.DAL
                 using(SqlConnection conn = CreateConnection())
                 {
                     //Den lagrade proceduren som ska användas
-                    SqlCommand updateRentalCmd = new SqlCommand("appSchema.updateUthyrning", conn);
+                    SqlCommand updateRentalCmd = new SqlCommand("appSchema.usp_updateUthyrning", conn);
                     updateRentalCmd.CommandType = CommandType.StoredProcedure;
 
                     //parametrar till proceduren
@@ -246,7 +200,7 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand deleteRentalCmd = new SqlCommand("appSchema.deleteUthyrning", conn);
+                    SqlCommand deleteRentalCmd = new SqlCommand("appSchema.usp_deleteUthyrning", conn);
                     deleteRentalCmd.CommandType = CommandType.StoredProcedure;
 
                     //UthyrningID till uthyrningen som ska raderas skickas som parameter

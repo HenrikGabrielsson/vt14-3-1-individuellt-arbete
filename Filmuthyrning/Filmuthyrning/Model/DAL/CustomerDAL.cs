@@ -23,8 +23,10 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getCustomersCmd = new SqlCommand("appSchema.getKunder", conn);
+                    SqlCommand getCustomersCmd = new SqlCommand("appSchema.usp_getKunder", conn);
                     getCustomersCmd.CommandType = CommandType.StoredProcedure;
+
+                    conn.Open();
 
                     using (SqlDataReader reader = getCustomersCmd.ExecuteReader())
                     {
@@ -76,7 +78,7 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getCustomerByIDCmd = new SqlCommand("appSchema.getKundByID", conn);
+                    SqlCommand getCustomerByIDCmd = new SqlCommand("appSchema.usp_getKundByID", conn);
                     getCustomerByIDCmd.CommandType = CommandType.StoredProcedure;
 
                     getCustomerByIDCmd.Parameters.Add("@CustomerID", SqlDbType.Int, 4).Value = customerID;
@@ -124,7 +126,7 @@ namespace Filmuthyrning.Model.DAL
                 //Anslutningen som används för att kommunicera med databasen
                 using (SqlConnection conn = CreateConnection())
                 {
-                    SqlCommand newCustomerCmd = new SqlCommand("appSchema.newKund", conn);
+                    SqlCommand newCustomerCmd = new SqlCommand("appSchema.usp_newKund", conn);
                     newCustomerCmd.CommandType = CommandType.StoredProcedure;
 
                     //Parametrar som måste fyllas i
@@ -164,7 +166,7 @@ namespace Filmuthyrning.Model.DAL
                 using(SqlConnection conn = CreateConnection())
                 {
                     //Den lagrade proceduren som ska användas
-                    SqlCommand updateCustomerCmd = new SqlCommand("appSchema.updateKund", conn);
+                    SqlCommand updateCustomerCmd = new SqlCommand("appSchema.usp_updateKund", conn);
                     updateCustomerCmd.CommandType = CommandType.StoredProcedure;
 
                     //parametrar till proceduren
@@ -195,7 +197,7 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand deleteCustomerCmd = new SqlCommand("appSchema.deleteKund", conn);
+                    SqlCommand deleteCustomerCmd = new SqlCommand("appSchema.usp_deleteKund", conn);
                     deleteCustomerCmd.CommandType = CommandType.StoredProcedure;
 
                     //kundID till kunden som ska raderas skickas som parameter

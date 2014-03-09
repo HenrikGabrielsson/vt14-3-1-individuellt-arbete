@@ -81,12 +81,6 @@ namespace Filmuthyrning.Model.BLL
             return RentalDAL.getRentalByID(rentalID);
         }
 
-        //hämta 'en sida med uthyrningar'
-        public IEnumerable<Rental> GetRentalsPagewise(int maxRows,int startIndex,int totalRowCount)
-        {
-            return RentalDAL.GetRentalsPagewise(maxRows,startIndex, out totalRowCount);
-        }
-
         //skapa / uppdatera Uthyrning
         public int SaveRental(Rental rental)
         {

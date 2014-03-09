@@ -23,8 +23,11 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getMoviesCmd = new SqlCommand("appSchema.getFilmer", conn);
+                    SqlCommand getMoviesCmd = new SqlCommand("appSchema.usp_getFilmer", conn);
                     getMoviesCmd.CommandType = CommandType.StoredProcedure;
+
+                    //anslutningen öppnas
+                    conn.Open();
 
                     using (SqlDataReader reader = getMoviesCmd.ExecuteReader())
                     {
@@ -34,7 +37,7 @@ namespace Filmuthyrning.Model.DAL
                         int titleIndex = reader.GetOrdinal("Titel");
                         int yearIndex = reader.GetOrdinal("År");
                         int genreIndex = reader.GetOrdinal("Genre");
-                        int priceGroupIDIndex = reader.GetOrdinal("Prisgrupp");
+                        int priceGroupIDIndex = reader.GetOrdinal("PrisgruppID");
                         int rentalPeriodIndex = reader.GetOrdinal("Hyrtid");
                         int quantityIndex = reader.GetOrdinal("Antal");
 
@@ -45,11 +48,11 @@ namespace Filmuthyrning.Model.DAL
                             Movie movie = new Movie();
                             movie.MovieID = reader.GetInt32(movieIDIndex);
                             movie.Title = reader.GetString(titleIndex);
-                            movie.Year = reader.GetInt32(yearIndex);
+                            movie.Year = reader.GetInt16(yearIndex);
                             movie.Genre = reader.GetString(genreIndex);
-                            movie.PriceGroupID = reader.GetInt32(priceGroupIDIndex);
-                            movie.RentalPeriod = reader.GetInt32(rentalPeriodIndex);
-                            movie.Quantity = reader.GetInt32(quantityIndex);
+                            movie.PriceGroupID = reader.GetByte(priceGroupIDIndex);
+                            movie.RentalPeriod = reader.GetByte(rentalPeriodIndex);
+                            movie.Quantity = reader.GetByte(quantityIndex);
 
                             movies.Add(movie);
                         }
@@ -78,7 +81,7 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getMovieByIDCmd = new SqlCommand("appSchema.getFilmByID", conn);
+                    SqlCommand getMovieByIDCmd = new SqlCommand("appSchema.usp_getFilmByID", conn);
                     getMovieByIDCmd.CommandType = CommandType.StoredProcedure;
 
                     getMovieByIDCmd.Parameters.Add("@FilmID", SqlDbType.Int, 4).Value = movieID;
