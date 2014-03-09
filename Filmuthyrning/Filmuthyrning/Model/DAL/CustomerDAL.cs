@@ -23,10 +23,10 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getCustomers = new SqlCommand("appSchema.getKunder", conn);
-                    getCustomers.CommandType = CommandType.StoredProcedure;
+                    SqlCommand getCustomersCmd = new SqlCommand("appSchema.getKunder", conn);
+                    getCustomersCmd.CommandType = CommandType.StoredProcedure;
 
-                    using (SqlDataReader reader = new SqlDataReader())
+                    using (SqlDataReader reader = getCustomersCmd.ExecuteReader())
                     {
 
                         //hämta alla index i tabeller
@@ -76,15 +76,15 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getCustomerByID = new SqlCommand("appSchema.getKundByID", conn);
-                    getCustomerByID.CommandType = CommandType.StoredProcedure;
+                    SqlCommand getCustomerByIDCmd = new SqlCommand("appSchema.getKundByID", conn);
+                    getCustomerByIDCmd.CommandType = CommandType.StoredProcedure;
 
-                    getCustomerByID.Parameters.Add("@CustomerID", SqlDbType.Int, 4).Value = customerID;
+                    getCustomerByIDCmd.Parameters.Add("@CustomerID", SqlDbType.Int, 4).Value = customerID;
 
                     //anslutningen öppnas
                     conn.Open();
 
-                    using (SqlDataReader reader = getCustomerByID.ExecuteReader())
+                    using (SqlDataReader reader = getCustomerByIDCmd.ExecuteReader())
                     {
                         //hämta alla index i tabeller
                         int customerIDIndex = reader.GetOrdinal("KundID");

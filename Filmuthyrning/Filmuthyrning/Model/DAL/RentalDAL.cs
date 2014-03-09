@@ -23,10 +23,10 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getRentals = new SqlCommand("appSchema.getUthyrningar", conn);
-                    getRentals.CommandType = CommandType.StoredProcedure;
+                    SqlCommand getRentalsCmd = new SqlCommand("appSchema.getUthyrningar", conn);
+                    getRentalsCmd.CommandType = CommandType.StoredProcedure;
 
-                    using (SqlDataReader reader = new SqlDataReader())
+                    using (SqlDataReader reader = getRentalsCmd.ExecuteReader())
                     {
 
                         //hämta alla index i tabeller
@@ -72,15 +72,15 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getRentalByID = new SqlCommand("appSchema.getUthyrningByID", conn);
-                    getRentalByID.CommandType = CommandType.StoredProcedure;
+                    SqlCommand getRentalByIDCmd = new SqlCommand("appSchema.getUthyrningByID", conn);
+                    getRentalByIDCmd.CommandType = CommandType.StoredProcedure;
 
-                    getRentalByID.Parameters.Add("@UthyrningID", SqlDbType.Int, 4).Value = rentalID;
+                    getRentalByIDCmd.Parameters.Add("@UthyrningID", SqlDbType.Int, 4).Value = rentalID;
 
                     //anslutningen öppnas
                     conn.Open();
 
-                    using (SqlDataReader reader = getRentalByID.ExecuteReader())
+                    using (SqlDataReader reader = getRentalByIDCmd.ExecuteReader())
                     {
                         //hämta alla index i tabeller
                         int rentalIDIndex = reader.GetOrdinal("UthyrningID");

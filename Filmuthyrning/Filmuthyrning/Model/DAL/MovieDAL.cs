@@ -23,10 +23,10 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getMovies = new SqlCommand("appSchema.getFilmer", conn);
-                    getMovies.CommandType = CommandType.StoredProcedure;
+                    SqlCommand getMoviesCmd = new SqlCommand("appSchema.getFilmer", conn);
+                    getMoviesCmd.CommandType = CommandType.StoredProcedure;
 
-                    using (SqlDataReader reader = new SqlDataReader())
+                    using (SqlDataReader reader = getMoviesCmd.ExecuteReader())
                     {
 
                         //hämta alla index i tabeller
@@ -78,15 +78,15 @@ namespace Filmuthyrning.Model.DAL
                 using (SqlConnection conn = CreateConnection())
                 {
                     //den lagrade proceduren som ska användas
-                    SqlCommand getMovieByID = new SqlCommand("appSchema.getFilmByID", conn);
-                    getMovieByID.CommandType = CommandType.StoredProcedure;
+                    SqlCommand getMovieByIDCmd = new SqlCommand("appSchema.getFilmByID", conn);
+                    getMovieByIDCmd.CommandType = CommandType.StoredProcedure;
 
-                    getMovieByID.Parameters.Add("@FilmID", SqlDbType.Int, 4).Value = movieID;
+                    getMovieByIDCmd.Parameters.Add("@FilmID", SqlDbType.Int, 4).Value = movieID;
 
                     //anslutningen öppnas
                     conn.Open();
 
-                    using (SqlDataReader reader = getMovieByID.ExecuteReader())
+                    using (SqlDataReader reader = getMovieByIDCmd.ExecuteReader())
                     {
                         //hämta alla index i tabeller
                         int movieIDIndex = reader.GetOrdinal("FilmID");
