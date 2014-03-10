@@ -10,8 +10,11 @@ namespace Filmuthyrning.App_Start
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+
             routes.MapPageRoute("RentalList", "", "~/Pages/RentalPages/RentalList.aspx");
-            routes.MapPageRoute("MovieList", "Film/Alla", "~/Pages/MoviePages/MovieList.aspx");
+            routes.MapPageRoute("RentalUpdate", "Uthyrning/Ändra", "~/Pages/RentalPages/RentalUpdate.aspx");
+            routes.MapPageRoute("CustomerList", "Kund/Lista", "~/Pages/CustomerPages/CustomerList.aspx");
+
         }
     }
 }

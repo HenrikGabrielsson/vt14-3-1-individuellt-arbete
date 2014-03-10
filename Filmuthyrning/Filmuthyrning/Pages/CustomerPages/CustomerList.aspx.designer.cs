@@ -10,16 +10,7 @@
 namespace Filmuthyrning.Pages.CustomerPages {
     
     
-    public partial class Customer {
-        
-        /// <summary>
-        /// CustomerTitle control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label CustomerTitle;
+    public partial class CustomerList {
         
         /// <summary>
         /// form control.
@@ -29,5 +20,14 @@ namespace Filmuthyrning.Pages.CustomerPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form;
+        
+        /// <summary>
+        /// ListView_Customer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListView ListView_Customer;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -26,6 +27,19 @@ namespace Filmuthyrning.Pages.RentalPages
         public IEnumerable<Rental> RentalListView_GetData()
         {
             return Service.GetRentals();
+        }
+
+
+        // The id parameter name should match the DataKeyNames value set on the control
+        public void RentalListView_UpdateItem(int RentalID)
+        {
+            
+        }
+
+        // The id parameter name should match the DataKeyNames value set on the control
+        public void RentalListView_DeleteItem(int RentalID)
+        {
+            Service.DeleteRental(RentalID);
         }
 
 

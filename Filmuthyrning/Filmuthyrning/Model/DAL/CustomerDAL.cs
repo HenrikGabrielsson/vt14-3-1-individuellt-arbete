@@ -45,11 +45,14 @@ namespace Filmuthyrning.Model.DAL
                             //hämtar och lägger till kunden i return-listan.
                             Customer customer = new Customer();
                             customer.CustomerID = reader.GetInt32(customerIDIndex);
-                            customer.CustomerTypeID = reader.GetInt32(customerTypeIDindex);
+                            customer.CustomerTypeID = reader.GetByte(customerTypeIDindex);
                             customer.FirstName = reader.GetString(fNameIndex);
                             customer.LastName = reader.GetString(lNameIndex);
                             customer.PhoneNumber = reader.GetString(phoneNumberIndex);
-                            customer.Email = reader.GetString(emailIndex);
+                            if(!reader.IsDBNull(emailIndex)) //kollar så email inte är null för att undvika exception
+                            {
+                                customer.Email = reader.GetString(emailIndex);
+                            }
 
                             customers.Add(customer);
                         }

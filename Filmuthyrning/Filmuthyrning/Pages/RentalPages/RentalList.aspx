@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RentalList.aspx.cs" Inherits="Filmuthyrning.Pages.RentalPages.RentalList" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RentalList.aspx.cs" Inherits="Filmuthyrning.Pages.RentalPages.RentalList"  ViewStateMode="Disabled" %>
 
 <!DOCTYPE html>
 
@@ -10,7 +10,8 @@
     <form id="Form" runat="server">
     <div>
         <%-- Tabellen med Filmer --%>
-        <asp:ListView ID="RentalListView" runat="server" selectMethod="RentalListView_GetData" ItemType="Filmuthyrning.Model.BLL.Rental" DataKeyNames="RentalID" >
+        <asp:ListView ID="RentalListView" runat="server" selectMethod="RentalListView_GetData" ItemType="Filmuthyrning.Model.BLL.Rental" DataKeyNames="RentalID" 
+            DeleteMethod="RentalListView_DeleteItem">
             <LayoutTemplate>
                 <table>
                     <tr>
@@ -28,6 +29,10 @@
                     <td><%# Item.MovieTitle %></td>
                     <td><%# String.Format("{0}, {1}",Item.lastName, Item.firstName) %></td>
                     <td><%# Item.RentalDate %></td>
+                    <td><asp:HyperLink runat="server" NavigateUrl='<%# System.IO.Path.Combine("~","Uthyrning","Ändra",String.Format("?Rental={0}",Item.RentalID.ToString())) %>'>Uppdatera</asp:HyperLink></td>
+                    <td class="command">
+                        <asp:LinkButton runat="server" CommandName="Delete" Text="Ta bort" CausesValidation="false" />
+                    </td>
                 </tr>
             </ItemTemplate>
 
