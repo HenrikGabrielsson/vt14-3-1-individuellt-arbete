@@ -29,7 +29,10 @@
                     <td><%# Item.MovieTitle %></td>
                     <td><%# String.Format("{0}, {1}",Item.lastName, Item.firstName) %></td>
                     <td><%# Item.RentalDate %></td>
-                    <td><asp:HyperLink runat="server" NavigateUrl='<%# System.IO.Path.Combine("~","Uthyrning","Ändra",String.Format("?Rental={0}",Item.RentalID.ToString())) %>'>Uppdatera</asp:HyperLink></td>
+                    <td><asp:HyperLink runat="server" 
+                        NavigateUrl='<%# System.IO.Path.Combine("~","Uthyrning","Spara",String.Format("?Rental={0}",Item.RentalID.ToString())) %>'>
+                        Uppdatera
+                    </asp:HyperLink></td>
                     <td class="command">
                         <asp:LinkButton runat="server" CommandName="Delete" Text="Ta bort" CausesValidation="false" />
                     </td>

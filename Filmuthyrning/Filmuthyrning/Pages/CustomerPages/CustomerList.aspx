@@ -28,6 +28,10 @@
                     <td><%# Item.LastName  %></td>
                     <td><%# Item.PhoneNumber  %></td>
                     <td><%# Item.Email  %></td>
+                    <td><asp:HyperLink runat="server" 
+                        NavigateUrl='<%# System.IO.Path.Combine("~","Kund","Spara",String.Format("?Customer={0}",Item.CustomerID.ToString())) %>'>
+                        Uppdatera
+                    </asp:HyperLink></td>
                     <td class="command">
                         <asp:LinkButton CommandName="Delete" CausesValidation="false" Text="Ta bort" runat="server" />
                     </td>

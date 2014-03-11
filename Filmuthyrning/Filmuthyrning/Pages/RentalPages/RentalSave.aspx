@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RentalUpdate.aspx.cs" Inherits="Filmuthyrning.Pages.RentalPages.RentalUpdate" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RentalSave.aspx.cs" Inherits="Filmuthyrning.Pages.RentalPages.RentalUpdate" %>
 
 <!DOCTYPE html>
 
@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    
+              
     </div>
     </form>
 </body>

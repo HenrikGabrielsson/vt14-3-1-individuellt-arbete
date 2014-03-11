@@ -84,7 +84,7 @@ namespace Filmuthyrning.Model.DAL
                     SqlCommand getCustomerByIDCmd = new SqlCommand("appSchema.usp_getKundByID", conn);
                     getCustomerByIDCmd.CommandType = CommandType.StoredProcedure;
 
-                    getCustomerByIDCmd.Parameters.Add("@CustomerID", SqlDbType.Int, 4).Value = customerID;
+                    getCustomerByIDCmd.Parameters.Add("@KundID", SqlDbType.Int, 4).Value = customerID;
 
                     //anslutningen öppnas
                     conn.Open();
@@ -102,11 +102,14 @@ namespace Filmuthyrning.Model.DAL
                         if (reader.Read())
                         {
                             customer.CustomerID = reader.GetInt32(customerIDIndex);
-                            customer.CustomerTypeID = reader.GetInt32(customerTypeIDindex);
+                            customer.CustomerTypeID = reader.GetByte(customerTypeIDindex);
                             customer.FirstName = reader.GetString(fNameIndex);
                             customer.LastName = reader.GetString(lNameIndex);
                             customer.PhoneNumber = reader.GetString(phoneNumberIndex);
-                            customer.Email = reader.GetString(emailIndex);
+                            if (!reader.IsDBNull(emailIndex)) //kollar så email inte är null för att undvika exception
+                            {
+                                customer.Email = reader.GetString(emailIndex);
+                            }
 
                             return customer;
                         }
@@ -173,7 +176,7 @@ namespace Filmuthyrning.Model.DAL
                     updateCustomerCmd.CommandType = CommandType.StoredProcedure;
 
                     //parametrar till proceduren
-                    updateCustomerCmd.Parameters.Add("@KundID", SqlDbType.Int, 4).Value = updCustomer.FirstName;
+                    updateCustomerCmd.Parameters.Add("@KundID", SqlDbType.Int, 4).Value = updCustomer.CustomerID;
                     updateCustomerCmd.Parameters.Add("@FNamn", SqlDbType.VarChar, 50).Value = updCustomer.FirstName;
                     updateCustomerCmd.Parameters.Add("@ENamn", SqlDbType.VarChar, 50).Value = updCustomer.LastName;
                     updateCustomerCmd.Parameters.Add("@Telefon", SqlDbType.VarChar, 10).Value = updCustomer.PhoneNumber;
@@ -183,6 +186,7 @@ namespace Filmuthyrning.Model.DAL
 
                     //kör proceduren och returnerar antalet ändrade rader
                     return updateCustomerCmd.ExecuteNonQuery();
+                    
                 }
 
             }

@@ -11,6 +11,13 @@ namespace Filmuthyrning.Pages.RentalPages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            int rentalID = 0;
+            //hämta uthyrningsid som ska ändras. Om det är 0 så är det en ny uthyrning
+            if (Request.QueryString["Rental"] != null)
+            {
+
+                rentalID = int.Parse(Request.QueryString["Rental"]);
+            }
 
         }
     }

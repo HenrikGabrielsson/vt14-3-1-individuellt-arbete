@@ -68,8 +68,9 @@
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Pages\CustomerPages\CustomerList.aspx" />
+    <Content Include="Pages\CustomerPages\CustomerSave.aspx" />
     <Content Include="Pages\RentalPages\RentalList.aspx" />
-    <Content Include="Pages\RentalPages\RentalUpdate.aspx" />
+    <Content Include="Pages\RentalPages\RentalSave.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -102,6 +103,13 @@
     <Compile Include="Pages\CustomerPages\CustomerList.aspx.designer.cs">
       <DependentUpon>CustomerList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\CustomerPages\CustomerSave.aspx.cs">
+      <DependentUpon>CustomerSave.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\CustomerPages\CustomerSave.aspx.designer.cs">
+      <DependentUpon>CustomerSave.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\RentalPages\RentalList.aspx.cs">
       <DependentUpon>RentalList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -109,12 +117,12 @@
     <Compile Include="Pages\RentalPages\RentalList.aspx.designer.cs">
       <DependentUpon>RentalList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\RentalPages\RentalUpdate.aspx.cs">
-      <DependentUpon>RentalUpdate.aspx</DependentUpon>
+    <Compile Include="Pages\RentalPages\RentalSave.aspx.cs">
+      <DependentUpon>RentalSave.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\RentalPages\RentalUpdate.aspx.designer.cs">
-      <DependentUpon>RentalUpdate.aspx</DependentUpon>
+    <Compile Include="Pages\RentalPages\RentalSave.aspx.designer.cs">
+      <DependentUpon>RentalSave.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
