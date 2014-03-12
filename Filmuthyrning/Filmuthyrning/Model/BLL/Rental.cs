@@ -12,6 +12,7 @@ namespace Filmuthyrning.Model.BLL
         public int RentalID { get; set; }
 
         [Required(ErrorMessage="En film måste väljas!")]
+        
         public int MovieID { get; set; }
 
         public string MovieTitle { get; set; }

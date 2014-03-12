@@ -12,6 +12,7 @@ namespace Filmuthyrning.App_Start
         {
             //Uthyrningar
             routes.MapPageRoute("RentalList", "", "~/Pages/RentalPages/RentalList.aspx");
+            routes.MapPageRoute("RentalList2", "Uthyrning/Lista", "~/Pages/RentalPages/RentalList.aspx");
             routes.MapPageRoute("RentalUpdate", "Uthyrning/Spara", "~/Pages/RentalPages/RentalSave.aspx");
 
             //Kunder

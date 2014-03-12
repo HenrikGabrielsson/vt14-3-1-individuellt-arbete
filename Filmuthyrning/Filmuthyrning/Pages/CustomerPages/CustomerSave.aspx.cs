@@ -67,30 +67,23 @@ namespace Filmuthyrning.Pages.CustomerPages
                 customerID = int.Parse(Request.QueryString["Customer"]);
             }
 
-            //om det är en kund som ska uppdateras
+            //hämta alla uppgifter
+            customer.FirstName = fNameBox.Text;
+            customer.LastName = lNameBox.Text;
+            customer.PhoneNumber = phoneBox.Text;
+            customer.Email = emailBox.Text;
+
+            //om det är en kund som ska uppdateras så behåller den sitt gamla id
             if(customerID != 0)
             {
                 customer.CustomerID = customerID;
-                customer.FirstName = fNameBox.Text;
-                customer.LastName = lNameBox.Text;
-                customer.PhoneNumber = phoneBox.Text;
-                customer.Email = emailBox.Text;
-
-                Service.SaveCustomer(customer);
 
             }
 
-            //om det är en ny kund
-            else
-            {
-                customer.FirstName = fNameBox.Text;
-                customer.LastName = lNameBox.Text;
-                customer.PhoneNumber = phoneBox.Text;
-                customer.Email = emailBox.Text;
+            //kunden sparas
+            Service.SaveCustomer(customer);
 
-                Service.SaveCustomer(customer);
-            }
-            Response.Redirect("~/kund/lista");
+            Response.Redirect("~/kund/lista"); //efter sparningen så skickas man vidare till kundlistan
         }
 
 
