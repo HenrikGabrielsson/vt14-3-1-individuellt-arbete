@@ -12,14 +12,14 @@ namespace Filmuthyrning.Model.BLL
         public bool ValidateRental(Rental rental, out string errorMessage)
         {
             //Kollar så en film är vald
-            if(rental.MovieID == null)
+            if(rental.MovieID == 0)
             {
                 errorMessage = "Du måste välja en film";
                 return false;
             }
 
             //Kollar så en kund är vald
-            if (rental.CustomerID == null)
+            if (rental.CustomerID == 0)
             {
                 errorMessage = "Du måste välja en kund";
                 return false;

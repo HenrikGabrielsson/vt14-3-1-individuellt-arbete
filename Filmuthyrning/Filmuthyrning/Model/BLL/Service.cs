@@ -81,8 +81,8 @@ namespace Filmuthyrning.Model.BLL
         //skapa / uppdatera Uthyrning
         public int SaveRental(Rental rental)
         {
+            //Validering
             Validation val = new Validation();
-
             string errorMessage;
             if (val.ValidateRental(rental, out errorMessage))
             {
@@ -98,7 +98,12 @@ namespace Filmuthyrning.Model.BLL
                     return RentalDAL.UpdateRental(rental);
                 }
             }
-            return 0;
+            //Om valideringen inte är godkänd
+            else
+            {
+
+                return 0;
+            }
         }
 
         //ta bort uthyrning
