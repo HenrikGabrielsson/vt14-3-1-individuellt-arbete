@@ -35,27 +35,24 @@ namespace Filmuthyrning.Model.BLL
         //skapa / uppdatera kund
         public int SaveCustomer(Customer customer)
         {
-            //validering
-            //i denna lista sparas alla fel efter att extensionmetoden "Validate" körs
-            ICollection<ValidationResult> valResults;
-            if(!customer.Validate(out valResults)) //om valideringen misslyckas
-            {
-                var ex = new ValidationException("Kunden klarade inte valideringen");
-                ex.Data.Add("ValidationResult", valResults);
-                throw ex;
-            }
+            Validation val = new Validation();
 
-            //ny kund (skickar tillbaka customerID)
-            if(customer.CustomerID == 0)
+            string errorMessage;
+            if (val.ValidateCustomer(customer,out errorMessage))
             {
-                return CustomerDAL.NewCustomer(customer);
-            }
+                //ny kund (skickar tillbaka customerID)
+                if (customer.CustomerID == 0)
+                {
+                    return CustomerDAL.NewCustomer(customer);
+                }
 
-            //uppdaterad kund (skickar tillbaka antal ändrade rader)
-            else
-            {
-                return CustomerDAL.UpdateCustomer(customer);
+                //uppdaterad kund (skickar tillbaka antal ändrade rader)
+                else
+                {
+                    return CustomerDAL.UpdateCustomer(customer);
+                }
             }
+            return 0;
         }
 
         //ta bort kund
@@ -84,27 +81,24 @@ namespace Filmuthyrning.Model.BLL
         //skapa / uppdatera Uthyrning
         public int SaveRental(Rental rental)
         {
-            //validering
-            //i denna lista sparas alla fel efter att extensionmetoden "Validate" körs
-            ICollection<ValidationResult> valResults;
-            if (!rental.Validate(out valResults)) //om valideringen misslyckas
-            {
-                var ex = new ValidationException("Uthyrningen klarade inte valideringen");
-                ex.Data.Add("ValidationResult", valResults);
-                throw ex;
-            }
+            Validation val = new Validation();
 
-            //ny uthyrning (skickar tillbaka rentalID)
-            if (rental.RentalID == 0)
+            string errorMessage;
+            if (val.ValidateRental(rental, out errorMessage))
             {
-                return RentalDAL.NewRental(rental);
-            }
+                //ny uthyrning (skickar tillbaka rentalID)
+                if (rental.RentalID == 0)
+                {
+                    return RentalDAL.NewRental(rental);
+                }
 
-            //uppdaterad uthyrning (skickar tillbaka antal ändrade rader)
-            else
-            {
-                return RentalDAL.UpdateRental(rental);
+                //uppdaterad uthyrning (skickar tillbaka antal ändrade rader)
+                else
+                {
+                    return RentalDAL.UpdateRental(rental);
+                }
             }
+            return 0;
         }
 
         //ta bort uthyrning
@@ -114,8 +108,6 @@ namespace Filmuthyrning.Model.BLL
             return RentalDAL.DeleteRental(rentalID);
         }
        
-
-
 
         //Funktioner för filmer
         //hämta alla filmer

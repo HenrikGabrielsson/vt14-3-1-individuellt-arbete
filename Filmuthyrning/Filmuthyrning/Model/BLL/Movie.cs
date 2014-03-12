@@ -9,7 +9,6 @@ namespace Filmuthyrning.Model.BLL
     public class Movie
     {
         //Alla egenskaper.
-        //Behöver inte validering för närvarande då det inte går att lägga till filmer i denna applikation
         public int MovieID{get;set;}
         public string Title{get;set;}
         public int Year { get; set; }

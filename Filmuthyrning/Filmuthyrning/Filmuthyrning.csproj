@@ -91,7 +91,7 @@
     <Compile Include="Model\BLL\Movie.cs" />
     <Compile Include="Model\BLL\Rental.cs" />
     <Compile Include="Model\BLL\Service.cs" />
-    <Compile Include="Model\BLL\ValidateExtension\ValidateExtension.cs" />
+    <Compile Include="Model\BLL\Validation.cs" />
     <Compile Include="Model\DAL\CustomerDAL.cs" />
     <Compile Include="Model\DAL\DALBase.cs" />
     <Compile Include="Model\DAL\MovieDAL.cs" />

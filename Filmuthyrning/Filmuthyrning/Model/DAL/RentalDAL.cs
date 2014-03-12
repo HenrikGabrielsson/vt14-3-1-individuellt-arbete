@@ -124,7 +124,7 @@ namespace Filmuthyrning.Model.DAL
 
 
         //funktion som lägger till en ny uthyrning 
-        public void NewRental(Rental newRental)
+        public int NewRental(Rental newRental)
         {
             try
             {
@@ -153,8 +153,11 @@ namespace Filmuthyrning.Model.DAL
                     //Den lagrade proceduren anropas och lägger till den nya uthyrningen i databasen
                     newRentalCmd.ExecuteNonQuery();
 
-                    //Den nya uthyrningens id hämtas
+                    //Den nya uthyrningens id hämtas och returneras.
                     newRental.CustomerID = (int)newRentalCmd.Parameters["@UthyrningID"].Value;
+
+                    //returnerar det nya id:t. Är 0 Ifall uthyrningen inte lades till
+                    return newRental.RentalID;
                 }
             }
             catch
@@ -164,7 +167,7 @@ namespace Filmuthyrning.Model.DAL
         }
 
         //funktion som uppdaterar en befintlig uthyrning
-        public void UpdateRental(Rental updRental)
+        public int UpdateRental(Rental updRental)
         {
             try
             {
@@ -188,8 +191,8 @@ namespace Filmuthyrning.Model.DAL
 
                     conn.Open();
 
-                    //kör proceduren
-                    updateRentalCmd.ExecuteNonQuery();
+                    //kör proceduren och returnerar antalet ändrade rader
+                    return updateRentalCmd.ExecuteNonQuery();
                 }
 
             }
@@ -200,7 +203,7 @@ namespace Filmuthyrning.Model.DAL
         }
 
         //funktion som tar bort en uthyrning med medskickat id
-        public void DeleteRental(int delRentalID)
+        public int DeleteRental(int delRentalID)
         {
             try
             {
@@ -215,8 +218,8 @@ namespace Filmuthyrning.Model.DAL
 
                     conn.Open();
 
-                    //Kör proceduren
-                    deleteRentalCmd.ExecuteNonQuery();
+                    //Kör proceduren som tar bort uthyrningen och returnerar antalet ändrade rader.
+                    return deleteRentalCmd.ExecuteNonQuery();
                 }
             }
             catch
