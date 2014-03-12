@@ -99,6 +99,7 @@ namespace Filmuthyrning.Model.DAL
                         int phoneNumberIndex = reader.GetOrdinal("Telefon");
                         int emailIndex = reader.GetOrdinal("Email");
 
+                        //hämtar tabellraden med samma ID som argumentet till funktionen 
                         if (reader.Read())
                         {
                             customer.CustomerID = reader.GetInt32(customerIDIndex);
