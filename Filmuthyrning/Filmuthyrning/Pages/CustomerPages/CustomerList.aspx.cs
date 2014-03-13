@@ -19,6 +19,13 @@ namespace Filmuthyrning.Pages.CustomerPages
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //Om man skickas till denna sida efter en lyckad sparning så visas ett meddelande som konfirmerar att det fungerade
+            if (Session["SaveMessage"] != null)
+            {
+                SuccessLabel.Text = (string)Session["SaveMessage"];
+                SuccessLabel.Visible = true;
+                Session["SaveMessage"] = null;
+            }
 
         }
 

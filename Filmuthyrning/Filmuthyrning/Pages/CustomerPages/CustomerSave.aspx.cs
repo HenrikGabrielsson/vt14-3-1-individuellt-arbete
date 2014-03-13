@@ -107,15 +107,17 @@ namespace Filmuthyrning.Pages.CustomerPages
             {
                 //kunden sparas
                 Service.SaveCustomer(customer);
+
+                //Ett meddelande om att sparningen fungerade sparas i en session som gör att ett meddelande visas på nästa sida
+                Session["SaveMessage"] = "Sparningen Lyckades!";
+                Response.Redirect("~/Kund/Lista", false);
             }
 
             catch(Exception ex)
             {
                 //om undantag fångas så skrivs ett felmeddelande ut
-                CustomValidator error = new CustomValidator();
-                error.IsValid = false;
-                error.ErrorMessage = ex.Message;
-                Page.Validators.Add(error);
+                Session["SaveMessage"] = ex.Message;
+                Response.Redirect("~/Kund/Lista", false);
             }
         }
 

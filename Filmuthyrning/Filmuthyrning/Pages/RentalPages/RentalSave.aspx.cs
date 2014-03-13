@@ -120,17 +120,17 @@ namespace Filmuthyrning.Pages.RentalPages
 
                 //uthyrningen sparas
                 Service.SaveRental(rental);
-                Session["SaveComplete"] = true;
-                Response.Redirect("~/Uthyrning/Lista");
+
+                //Ett meddelande skickas till nästa sida och säger att sparningen lyckades
+                Session["SaveMessage"] = "Sparningen lyckades!";
+                Response.Redirect("~/Uthyrning/Lista",false);
 
             }
             catch(Exception ex)
             {
                 //om undantag fångas så skrivs ett felmeddelande ut
-                CustomValidator error = new CustomValidator();
-                error.IsValid = false;
-                error.ErrorMessage = ex.Message;
-                Page.Validators.Add(error);
+                Session["SaveMessage"] = ex.Message;
+                Response.Redirect("~/Uthyrning/Lista", false);
             }
 
 

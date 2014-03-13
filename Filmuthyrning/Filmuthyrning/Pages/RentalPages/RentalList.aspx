@@ -7,7 +7,7 @@
         <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
         
         <%-- Om en sparning lyckas så visas detta meddelande--%>
-            <asp:Label ID="SuccessLabel" runat="server" Visible="false"></asp:Label>        
+            <asp:Label ID="SuccessLabel" runat="server" Visible="false" />      
         <%-- Tabellen med Uthyrningarna --%>
         <asp:ListView ID="RentalListView" runat="server" selectMethod="RentalListView_GetData" ItemType="Filmuthyrning.Model.BLL.Rental" DataKeyNames="RentalID" 
             DeleteMethod="RentalListView_DeleteItem">
