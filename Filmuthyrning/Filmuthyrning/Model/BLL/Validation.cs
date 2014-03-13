@@ -27,7 +27,7 @@ namespace Filmuthyrning.Model.BLL
 
 
             //Kollar ifall datumet är valt
-            if(rental.RentalDate != null)
+            if(!String.IsNullOrWhiteSpace(rental.RentalDate))
             {
                 //kollar så datumet har rätt format
                 Regex dateregex = new Regex("^[0-9]{4}-[0-9]{2}-[0-9]{2}$");

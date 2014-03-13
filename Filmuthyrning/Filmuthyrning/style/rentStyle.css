@@ -1,0 +1,76 @@
+﻿body {
+    background-color:#FEFEFE;
+    font-family:Calibri;
+}
+
+#container
+{
+    width:800px;
+    margin:auto;
+}
+
+#menu
+{
+    overflow:auto;
+    width:800px;
+    margin:auto;
+
+}
+
+#menu ul
+{
+    list-style-type:none;
+    width:800px;
+    margin:auto;
+}
+#menu li 
+{
+    float:left;
+    margin:5px 10px 5px 10px;
+
+    font-size:18pt;
+}
+
+#menu a:link
+{
+    color:#661111;
+}
+#menu a:visited
+{
+    color:#661111;
+}
+
+
+#main
+{
+    width:800px;
+    margin:auto;
+    overflow:auto;
+}
+
+
+form
+{
+    width:800px;
+    margin:auto;
+}
+
+td
+{
+    text-align:center;
+    width:100px;
+}
+
+input, label, select
+{
+    clear:both;
+    float:left;      
+}
+
+h1
+{
+    font-size:80pt;
+    color:#661111;
+    font-weight:bold;
+}
+

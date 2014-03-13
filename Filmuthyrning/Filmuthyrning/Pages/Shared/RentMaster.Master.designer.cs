@@ -7,81 +7,81 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Filmuthyrning.Pages.RentalPages {
+namespace Filmuthyrning.Pages.Shared {
     
     
-    public partial class RentalUpdate {
+    public partial class RentMaster {
         
         /// <summary>
-        /// ValidationSummary1 control.
+        /// MenuLink1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
+        protected global::System.Web.UI.WebControls.HyperLink MenuLink1;
         
         /// <summary>
-        /// MovieDropDownList control.
+        /// MenuLink2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList MovieDropDownList;
+        protected global::System.Web.UI.WebControls.HyperLink MenuLink2;
         
         /// <summary>
-        /// RequiredFieldValidator1 control.
+        /// MenuLink3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+        protected global::System.Web.UI.WebControls.HyperLink MenuLink3;
         
         /// <summary>
-        /// CustomerDropDownList control.
+        /// MenuLink4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList CustomerDropDownList;
+        protected global::System.Web.UI.WebControls.HyperLink MenuLink4;
         
         /// <summary>
-        /// RequiredFieldValidator2 control.
+        /// MenuLink5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
+        protected global::System.Web.UI.WebControls.HyperLink MenuLink5;
         
         /// <summary>
-        /// DateBox control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox DateBox;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// RegularExpressionValidator1 control.
+        /// PageTitleContentPlaceHolder control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder PageTitleContentPlaceHolder;
         
         /// <summary>
-        /// SaveButton control.
+        /// MainContentPlaceHolder control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SaveButton;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContentPlaceHolder;
     }
 }

@@ -39,6 +39,7 @@ namespace Filmuthyrning.Model.DAL
                         int firstNameIndex = reader.GetOrdinal("Förnamn");
                         int lastNameIndex = reader.GetOrdinal("Efternamn");
                         int rentalDateindex = reader.GetOrdinal("HyrDatum");
+                        int returnDateindex = reader.GetOrdinal("Återlämningsdatum");
 
                         //hämtar varje tabellrad för sig
                         while (reader.Read())
@@ -52,7 +53,7 @@ namespace Filmuthyrning.Model.DAL
                             rental.firstName = reader.GetString(firstNameIndex);
                             rental.lastName = reader.GetString(lastNameIndex);
                             rental.RentalDate = reader.GetDateTime(rentalDateindex).ToString();
-
+                            rental.ReturnDate = reader.GetDateTime(returnDateindex).ToString();
 
                             rentals.Add(rental);
                         }
@@ -98,6 +99,7 @@ namespace Filmuthyrning.Model.DAL
                         int firstNameIndex = reader.GetOrdinal("Förnamn");
                         int lastNameIndex = reader.GetOrdinal("Efternamn");
                         int rentalDateindex = reader.GetOrdinal("HyrDatum");
+                        int returnDateindex = reader.GetOrdinal("Återlämningsdatum");
 
                         if (reader.Read())
                         {
@@ -108,8 +110,7 @@ namespace Filmuthyrning.Model.DAL
                             rental.firstName = reader.GetString(firstNameIndex);
                             rental.lastName = reader.GetString(lastNameIndex);
                             rental.RentalDate = reader.GetDateTime(rentalDateindex).ToString();
-
-                            
+                            rental.ReturnDate = reader.GetDateTime(returnDateindex).ToString(); 
                         }
                     }
                 }
@@ -124,7 +125,7 @@ namespace Filmuthyrning.Model.DAL
 
 
         //funktion som lägger till en ny uthyrning 
-        public int NewRental(Rental newRental)
+        public void NewRental(Rental newRental)
         {
             try
             {
@@ -153,11 +154,13 @@ namespace Filmuthyrning.Model.DAL
                     //Den lagrade proceduren anropas och lägger till den nya uthyrningen i databasen
                     newRentalCmd.ExecuteNonQuery();
 
-                    //Den nya uthyrningens id hämtas och returneras.
-                    newRental.CustomerID = (int)newRentalCmd.Parameters["@UthyrningID"].Value;
+                    //Den nya uthyrningens id hämtas och kontrolleras så att det inte är 0, för då har något gått fel vid sparningen.
+                    int newRentalID = (int)newRentalCmd.Parameters["@UthyrningID"].Value;
 
-                    //returnerar det nya id:t. Är 0 Ifall uthyrningen inte lades till
-                    return newRental.RentalID;
+                    if (newRentalID == 0)
+                    {
+                        throw new ApplicationException("An error occurred when accessing the database.");
+                    }
                 }
             }
             catch
@@ -167,7 +170,7 @@ namespace Filmuthyrning.Model.DAL
         }
 
         //funktion som uppdaterar en befintlig uthyrning
-        public int UpdateRental(Rental updRental)
+        public void UpdateRental(Rental updRental)
         {
             try
             {
@@ -191,8 +194,8 @@ namespace Filmuthyrning.Model.DAL
 
                     conn.Open();
 
-                    //kör proceduren och returnerar antalet ändrade rader
-                    return updateRentalCmd.ExecuteNonQuery();
+                    //kör proceduren.
+                    updateRentalCmd.ExecuteNonQuery();
                 }
 
             }
@@ -203,7 +206,7 @@ namespace Filmuthyrning.Model.DAL
         }
 
         //funktion som tar bort en uthyrning med medskickat id
-        public int DeleteRental(int delRentalID)
+        public void DeleteRental(int delRentalID)
         {
             try
             {
@@ -218,8 +221,8 @@ namespace Filmuthyrning.Model.DAL
 
                     conn.Open();
 
-                    //Kör proceduren som tar bort uthyrningen och returnerar antalet ändrade rader.
-                    return deleteRentalCmd.ExecuteNonQuery();
+                    //Kör proceduren
+                    deleteRentalCmd.ExecuteNonQuery();
                 }
             }
             catch

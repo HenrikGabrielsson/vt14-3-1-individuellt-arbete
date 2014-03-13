@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 using System.ComponentModel.DataAnnotations;
 using Filmuthyrning.Model.DAL;
+using System.Web.UI;
 
 namespace Filmuthyrning.Model.BLL
 {
@@ -19,47 +21,83 @@ namespace Filmuthyrning.Model.BLL
         private MovieDAL MovieDAL { get { return _movieDAL ?? (_movieDAL = new MovieDAL()); } }
         private RentalDAL RentalDAL { get { return _rentalDAL ?? (_rentalDAL = new RentalDAL()); } }
 
+        
+        
+        
         //Funktioner för Kunder
         //hämta alla kunder
         public IEnumerable<Customer> GetCustomers()
         {
-            return CustomerDAL.getCustomers();
+            try
+            {
+                return CustomerDAL.getCustomers();
+            }
+            catch
+            {
+                throw new ApplicationException();
+            }
         }
 
         //hämta en kund
         public Customer getCustomerByID(int customerID)
         {
-            return CustomerDAL.getCustomerByID(customerID);
+            try
+            {
+                return CustomerDAL.getCustomerByID(customerID);
+            }
+            catch
+            {
+                throw new ApplicationException();
+            }
         }
 
         //skapa / uppdatera kund
-        public int SaveCustomer(Customer customer)
+        public void SaveCustomer(Customer customer)
         {
             Validation val = new Validation();
 
-            string errorMessage;
-            if (val.ValidateCustomer(customer,out errorMessage))
-            {
-                //ny kund (skickar tillbaka customerID)
-                if (customer.CustomerID == 0)
-                {
-                    return CustomerDAL.NewCustomer(customer);
-                }
+            string errorMessage ="";
 
-                //uppdaterad kund (skickar tillbaka antal ändrade rader)
+            try
+            {
+                if (val.ValidateCustomer(customer, out errorMessage))
+                {
+                    //ny kund (skickar tillbaka customerID)
+                    if (customer.CustomerID == 0)
+                    {
+                        CustomerDAL.NewCustomer(customer);
+                    }
+
+                    //uppdaterad kund (skickar tillbaka antal ändrade rader)
+                    else
+                    {
+                        CustomerDAL.UpdateCustomer(customer);
+                    }
+                }
                 else
                 {
-                    return CustomerDAL.UpdateCustomer(customer);
+                    throw new ApplicationException(errorMessage);
                 }
             }
-            return 0;
+            catch
+            {
+                throw new ApplicationException(errorMessage);
+            }
+
         }
 
         //ta bort kund
-        public int DeleteCustomer(int customerID)
+        public void DeleteCustomer(int customerID)
         {
-            //skickar tillbaka antal ändrade rader
-            return CustomerDAL.DeleteCustomer(customerID);
+            try
+            {
+                //skickar tillbaka antal ändrade rader
+                CustomerDAL.DeleteCustomer(customerID);
+            }
+            catch
+            {
+                throw new ApplicationException();
+            }
         }
 
 
@@ -69,62 +107,132 @@ namespace Filmuthyrning.Model.BLL
         //hämta alla uthyrningar
         public IEnumerable<Rental> GetRentals()
         {
-            return RentalDAL.getRentals();
+            try
+            {
+                return RentalDAL.getRentals();
+            }
+            catch
+            {
+                throw new ApplicationException();
+            }
         }
 
         //hämta en uthyrning
         public Rental getRentalByID(int rentalID)
         {
-            return RentalDAL.getRentalByID(rentalID);
+            try
+            {
+                return RentalDAL.getRentalByID(rentalID);
+            }
+            catch
+            {
+                throw new ApplicationException();
+            }
         }
 
         //skapa / uppdatera Uthyrning
-        public int SaveRental(Rental rental)
+        public void SaveRental(Rental rental)
         {
             //Validering
             Validation val = new Validation();
-            string errorMessage;
-            if (val.ValidateRental(rental, out errorMessage))
+            string errorMessage ="";
+
+            try
             {
-                //ny uthyrning (skickar tillbaka rentalID)
-                if (rental.RentalID == 0)
+                if (val.ValidateRental(rental, out errorMessage))
                 {
-                    return RentalDAL.NewRental(rental);
+                    //ny uthyrning (skickar tillbaka rentalID)
+                    if (rental.RentalID == 0)
+                    {
+                        RentalDAL.NewRental(rental);
+                    }
+
+                    //uppdaterad uthyrning (skickar tillbaka antal ändrade rader)
+                    else
+                    {
+                        RentalDAL.UpdateRental(rental);
+                    }
                 }
 
-                //uppdaterad uthyrning (skickar tillbaka antal ändrade rader)
+                //Om valideringen inte är godkänd
                 else
                 {
-                    return RentalDAL.UpdateRental(rental);
+                    throw new ApplicationException(errorMessage);
                 }
             }
-            //Om valideringen inte är godkänd
-            else
+            catch
             {
-
-                return 0;
+                throw new ApplicationException(errorMessage);
             }
         }
 
         //ta bort uthyrning
-        public int DeleteRental(int rentalID)
+        public void DeleteRental(int rentalID)
         {
-            //skickar tillbaka antal ändrade rader
-            return RentalDAL.DeleteRental(rentalID);
+            try
+            {
+                //skickar tillbaka antal ändrade rader
+                RentalDAL.DeleteRental(rentalID);
+            }
+            catch
+            {
+                throw new ApplicationException();
+            }
         }
        
+
+
+
 
         //Funktioner för filmer
         //hämta alla filmer
         public IEnumerable<Movie> GetMovies()
         {
-            return MovieDAL.getMovies();
+            try
+            {
+                return MovieDAL.getMovies();
+            }
+            catch
+            {
+                throw new ApplicationException();
+            }
+        }
+
+        //hämta bara filmer där antalet inte är 0
+        public IEnumerable<Movie> GetAvailMovies()
+        {
+            List<Movie> availMovies = new List<Movie>(100);
+
+            try
+            {
+                //lägger till alla filmer som går att hyra.
+                foreach (Movie movie in GetMovies())
+                {
+                    if (movie.Quantity > 0)
+                    {
+                        availMovies.Add(movie);
+                    }
+                }
+                availMovies.TrimExcess();
+                return availMovies;
+            }
+            catch
+            {
+                throw new ApplicationException();
+            }
         }
 
         //hämta en film
         public Movie getMovieByID(int movieID)
         {
-            return MovieDAL.getMovieByID(movieID);
+            try
+            {
+                return MovieDAL.getMovieByID(movieID);
+            }
+            catch
+            {
+                throw new ApplicationException();
+            }
         }
 
     }

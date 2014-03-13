@@ -20,26 +20,49 @@ namespace Filmuthyrning.Pages.RentalPages
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            //Om man skickas till denna sida efter en lyckad sparning så visas ett meddelande som konfirmerar att det fungerade
+            if(Session["SaveComplete"] != null && (bool)Session["SaveComplete"]== true)
+            {
+                SuccessLabel.Text = "Sparningen lyckades!";
+                SuccessLabel.Visible = true;
+                Session["SaveComplete"] = null;
+            }
         }
 
         //Fyller tabellen med data
         public IEnumerable<Rental> RentalListView_GetData()
         {
-            return Service.GetRentals();
+            try
+            {
+                return Service.GetRentals();
+            }
+            catch
+            {
+                //om undantag fångas så skrivs ett felmeddelande ut
+                CustomValidator error = new CustomValidator();
+                error.IsValid = false;
+                error.ErrorMessage = "Något gick fel när uthyrningarna skulle hämtas.";
+                Page.Validators.Add(error);
+                return null;                
+            }
         }
 
 
-        // The id parameter name should match the DataKeyNames value set on the control
-        public void RentalListView_UpdateItem(int RentalID)
-        {
-            
-        }
-
-        // The id parameter name should match the DataKeyNames value set on the control
+        //Tar bort en post
         public void RentalListView_DeleteItem(int RentalID)
         {
-            Service.DeleteRental(RentalID);
+            try
+            {
+                Service.DeleteRental(RentalID);
+            }
+            catch
+            {
+                //om undantag fångas så skrivs ett felmeddelande ut
+                CustomValidator error = new CustomValidator();
+                error.IsValid = false;
+                error.ErrorMessage = "Något gick fel när uthyrningen skulle raderas.";
+                Page.Validators.Add(error); 
+            }
         }
 
 

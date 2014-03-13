@@ -1,13 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CustomerSave.aspx.cs" Inherits="Filmuthyrning.Pages.CustomerPages.CustomerSave" ViewStateMode="Disabled" %>
+﻿<%@ Page Language="C#" Title="Spara Kund" MasterPageFile="~/Pages/Shared/RentMaster.Master" AutoEventWireup="true" CodeBehind="CustomerSave.aspx.cs" Inherits="Filmuthyrning.Pages.CustomerPages.CustomerSave" ViewStateMode="Disabled" %>
 
-<!DOCTYPE html>
+<asp:Content ContentPlaceHolderID="PageTitleContentPlaceHolder" runat="server">
+    Lägg till eller ändra kund
+</asp:Content>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form" runat="server">
+<asp:Content ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
     <%--Här samlas alla valideringsfel --%>
     <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
     <div>
@@ -27,7 +24,4 @@
         <%-- Validering --%>
             <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ErrorMessage="Emailadressen har inte rätt format eller så är den för lång!" Display="Dynamic" Text="*" ValidationExpression="(.+@.+\..{2,4}){0,50}" ControlToValidate="emailBox"></asp:RegularExpressionValidator>    
         <asp:Button ID="SaveButton" runat="server" OnClick="SaveButton_Click" />
-    </div>
-    </form>
-</body>
-</html>
+</asp:Content>

@@ -14,5 +14,12 @@ namespace Filmuthyrning.Model.BLL
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }  
         public string Email { get; set; }
+        public string BothNames //Efternamn, förnamn
+        { 
+            get
+            {
+                return String.Format("{0}, {1}", LastName, FirstName);
+            }
+        }
     }
 }

@@ -63,7 +63,6 @@ namespace Filmuthyrning.Model.DAL
                 customers.TrimExcess();
                 return customers.AsEnumerable();
             }
-
             catch
             {
                 throw new ApplicationException("An error occurred when accessing the database.");
@@ -126,7 +125,7 @@ namespace Filmuthyrning.Model.DAL
         }
 
         //funktion som lägger till en ny kund 
-        public int NewCustomer(Customer newCustomer)
+        public void NewCustomer(Customer newCustomer)
         {
             try
             {
@@ -150,12 +149,13 @@ namespace Filmuthyrning.Model.DAL
                     //Den lagrade proceduren anropas och lägger till den nya kunden i databasen
                     newCustomerCmd.ExecuteNonQuery();
 
-                    //Den nya kundens id hämtas och returneras.
-                    newCustomer.CustomerID = (int)newCustomerCmd.Parameters["@KundID"].Value;
+                    //Den nya kundens id hämtas och kontrolleras så att det inte är 0, för då har nåt gått fel..
+                    int newCustomerID = (int)newCustomerCmd.Parameters["@KundID"].Value;
 
-                    //returnerar det nya id:t. Är 0 Ifall kunden inte lades till
-                    return newCustomer.CustomerID;
-
+                    if (newCustomerID == 0)
+                    {
+                        throw new ApplicationException("An error occurred when accessing the database.");
+                    }
                 }
             }
             catch
@@ -165,7 +165,7 @@ namespace Filmuthyrning.Model.DAL
         }
 
         //funktion som uppdaterar en befintlig kund
-        public int UpdateCustomer(Customer updCustomer)
+        public void UpdateCustomer(Customer updCustomer)
         {
             try
             {
@@ -185,11 +185,10 @@ namespace Filmuthyrning.Model.DAL
 
                     conn.Open();
 
-                    //kör proceduren och returnerar antalet ändrade rader
-                    return updateCustomerCmd.ExecuteNonQuery();
-                    
+                    //kör proceduren
+                    updateCustomerCmd.ExecuteNonQuery();
+                   
                 }
-
             }
             catch
             {
@@ -198,7 +197,7 @@ namespace Filmuthyrning.Model.DAL
         }
 
         //funktion som tar bort en kund med medskickat id
-        public int DeleteCustomer(int delCustomerID)
+        public void DeleteCustomer(int delCustomerID)
         {
             try
             {
@@ -213,8 +212,8 @@ namespace Filmuthyrning.Model.DAL
 
                     conn.Open();
 
-                    //Kör proceduren som tar bort kunden och returnerar antalet ändrade rader.
-                    return deleteCustomerCmd.ExecuteNonQuery();
+                    //Kör proceduren
+                    deleteCustomerCmd.ExecuteNonQuery();
                 }
             }
             catch

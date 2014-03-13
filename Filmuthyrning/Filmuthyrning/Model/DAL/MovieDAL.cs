@@ -106,10 +106,9 @@ namespace Filmuthyrning.Model.DAL
                             movie.Title = reader.GetString(titleIndex);
                             movie.Year = reader.GetInt32(yearIndex);
                             movie.Genre = reader.GetString(genreIndex);
-                            movie.PriceGroupID = reader.GetInt32(priceGroupIDIndex);
-                            movie.RentalPeriod = reader.GetInt32(rentalPeriodIndex);
+                            movie.PriceGroupID = reader.GetByte(priceGroupIDIndex);
+                            movie.RentalPeriod = reader.GetByte(rentalPeriodIndex);
                             movie.Quantity = reader.GetInt32(quantityIndex);
-
                         }
                     }
                 }

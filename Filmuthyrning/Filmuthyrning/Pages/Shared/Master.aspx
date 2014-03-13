@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Filmuthyrning.Default" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Master.aspx.cs" Inherits="Filmuthyrning.Pages.Shared.Master" ViewStateMode="Disabled" %>
 
 <!DOCTYPE html>
 
@@ -9,7 +9,6 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <p>Herrrroooooo</p>
     
     </div>
     </form>

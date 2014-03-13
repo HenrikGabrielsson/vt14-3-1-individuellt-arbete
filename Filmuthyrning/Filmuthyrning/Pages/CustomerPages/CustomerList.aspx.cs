@@ -25,7 +25,18 @@ namespace Filmuthyrning.Pages.CustomerPages
 
         public IEnumerable<Customer> ListView_Customer_GetData()
         {
-            return Service.GetCustomers();
+            try
+            {
+                return Service.GetCustomers();
+            }
+            catch
+            {
+                CustomValidator error = new CustomValidator();
+                error.IsValid = false;
+                error.ErrorMessage = "Något gick fel när kunderna skulle hämtas.";
+                Page.Validators.Add(error);
+                return null;
+            }
         }
 
         //Ta bort kunden

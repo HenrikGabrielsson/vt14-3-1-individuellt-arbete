@@ -1,0 +1,53 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="RentMaster.master.cs" Inherits="Filmuthyrning.Pages.Shared.RentMaster" ViewStateMode="Disabled" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <link href="~/style/rentStyle.css" rel="stylesheet" type="text/css" />
+    <title>
+        HyrFilm Kalmar
+    </title>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>HyrFilm Kalmar</h1>
+        </div>
+        <div id="menu">
+            <ul>
+                <li>
+                    <asp:HyperLink ID="MenuLink1" NavigateUrl="~/Uthyrning/Lista" runat="server">Alla uthyrningar</asp:HyperLink>
+                </li>
+                <li>
+                    <asp:HyperLink ID="MenuLink2" NavigateUrl="~/Uthyrning/Spara" runat="server">Ny uthyrning</asp:HyperLink>
+                </li>
+                <li>
+                    <asp:HyperLink ID="MenuLink3" NavigateUrl="~/Kund/Lista" runat="server">Alla kunder</asp:HyperLink>
+                </li>
+                <li>
+                    <asp:HyperLink ID="MenuLink4" NavigateUrl="~/Kund/Spara" runat="server">Ny kund</asp:HyperLink>
+                </li>
+                <li>
+                    <asp:HyperLink ID="MenuLink5" NavigateUrl="~/Film/Lista" runat="server">Alla filmer</asp:HyperLink>
+                </li>
+            </ul>
+        </div>
+        <div id="main">
+
+        <form id="form1" runat="server">
+        
+            <h2>
+                <asp:ContentPlaceHolder ID="PageTitleContentPlaceHolder" runat="server">
+                </asp:ContentPlaceHolder>
+            </h2>
+            <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server">
+            </asp:ContentPlaceHolder>
+        
+        </form>
+        </div>
+    </div>
+    <script src="<%= ResolveClientUrl("~/Script/RentScript.js") %>"></script>
+</body>
+</html>

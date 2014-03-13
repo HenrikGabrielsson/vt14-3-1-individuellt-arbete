@@ -1,14 +1,8 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CustomerList.aspx.cs" Inherits="Filmuthyrning.Pages.CustomerPages.CustomerList" %>
-
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form" runat="server">
-    <div>
+﻿<%@ Page Language="C#" Title="Kundlista" MasterPageFile="~/Pages/Shared/RentMaster.Master" AutoEventWireup="true" CodeBehind="CustomerList.aspx.cs" Inherits="Filmuthyrning.Pages.CustomerPages.CustomerList" %>
+<asp:Content ContentPlaceHolderID="PageTitleContentPlaceHolder" runat="server">
+    Alla kunder
+</asp:Content>
+<asp:Content ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
         <asp:ListView ID="ListView_Customer" ItemType="Filmuthyrning.Model.BLL.Customer" SelectMethod="ListView_Customer_GetData" DataKeyNames="CustomerID" runat="server" 
             DeleteMethod="ListView_Customer_DeleteItem">
             <LayoutTemplate>
@@ -42,7 +36,4 @@
                 <p>Det finns inga kunder att visa.</p>
             </EmptyDataTemplate>
         </asp:ListView>
-    </div>
-    </form>
-</body>
-</html>
+</asp:Content>

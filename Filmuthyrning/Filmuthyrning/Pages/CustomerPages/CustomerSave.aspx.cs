@@ -37,13 +37,25 @@ namespace Filmuthyrning.Pages.CustomerPages
                 //Om det är en kund som ska uppdateras.
                 if (customerID != 0)
                 {
-                    customer = Service.getCustomerByID(customerID);
+                    try
+                    {
+                        customer = Service.getCustomerByID(customerID);
+ 
+                        //fyller i textfälten med den gamla datan.
+                        fNameBox.Text = customer.FirstName;
+                        lNameBox.Text = customer.LastName;
+                        phoneBox.Text = customer.PhoneNumber;
+                        emailBox.Text = customer.Email;
+                    }
 
-                    //fyller i textfälten med den gamla datan.
-                    fNameBox.Text = customer.FirstName;
-                    lNameBox.Text = customer.LastName;
-                    phoneBox.Text = customer.PhoneNumber;
-                    emailBox.Text = customer.Email;
+                    catch
+                    {
+                        //om undantag fångas så skrivs ett felmeddelande ut
+                        CustomValidator error = new CustomValidator();
+                        error.IsValid = false;
+                        error.ErrorMessage = "Det gick inte att hämta kunduppgifterna";
+                        Page.Validators.Add(error);
+                    }
 
                     SaveButton.Text = "Spara ändringar";
                 }
@@ -61,29 +73,50 @@ namespace Filmuthyrning.Pages.CustomerPages
             Customer customer = new Customer();
             int customerID = 0;
 
-            //hämta kundid som ska ändras. Om det är 0 så är det en ny kund
-            if (Request.QueryString["Customer"] != null)
+            try
             {
-                customerID = int.Parse(Request.QueryString["Customer"]);
+                //hämta kundid som ska ändras. Om det är 0 så är det en ny kund
+                if (Request.QueryString["Customer"] != null)
+                {
+                    customerID = int.Parse(Request.QueryString["Customer"]);
+                }
+
+                //hämta alla uppgifter
+                customer.FirstName = fNameBox.Text;
+                customer.LastName = lNameBox.Text;
+                customer.PhoneNumber = phoneBox.Text;
+                customer.Email = emailBox.Text;
+
+                //om det är en kund som ska uppdateras så behåller den sitt gamla id
+                if (customerID != 0)
+                {
+                    customer.CustomerID = customerID;
+
+                }
+            }
+            catch
+            {
+                //om undantag fångas så skrivs ett felmeddelande ut
+                CustomValidator error = new CustomValidator();
+                error.IsValid = false;
+                error.ErrorMessage = "Något gick fel när uppgifterna skulle sparas";
+                Page.Validators.Add(error);                
             }
 
-            //hämta alla uppgifter
-            customer.FirstName = fNameBox.Text;
-            customer.LastName = lNameBox.Text;
-            customer.PhoneNumber = phoneBox.Text;
-            customer.Email = emailBox.Text;
-
-            //om det är en kund som ska uppdateras så behåller den sitt gamla id
-            if(customerID != 0)
+            try
             {
-                customer.CustomerID = customerID;
-
+                //kunden sparas
+                Service.SaveCustomer(customer);
             }
 
-            //kunden sparas
-            Service.SaveCustomer(customer);
-
-            Response.Redirect("~/kund/lista"); //efter sparningen så skickas man vidare till kundlistan
+            catch(Exception ex)
+            {
+                //om undantag fångas så skrivs ett felmeddelande ut
+                CustomValidator error = new CustomValidator();
+                error.IsValid = false;
+                error.ErrorMessage = ex.Message;
+                Page.Validators.Add(error);
+            }
         }
 
 

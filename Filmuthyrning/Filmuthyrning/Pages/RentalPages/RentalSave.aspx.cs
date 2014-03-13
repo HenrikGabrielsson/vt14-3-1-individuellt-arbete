@@ -54,47 +54,86 @@ namespace Filmuthyrning.Pages.RentalPages
                     SaveButton.Text = "Lägg till";
                 }
             }
+
         }
 
-        //metod som hämtar alla filmer
+        //metod som hämtar alla filmer som kan hyras ut.
         public IEnumerable<Movie> MovieDropDownList_GetData()
         {
-            return Service.GetMovies();
+            try
+            {
+                return Service.GetAvailMovies();
+            }
+            catch
+            {
+                //om undantag fångas så skrivs ett felmeddelande ut
+                CustomValidator error = new CustomValidator();
+                error.IsValid = false;
+                error.ErrorMessage = "Något gick fel när filmerna skulle hämtas.";
+                Page.Validators.Add(error);
+                return null;   
+            }
         }
 
         //metod som hämtar alla kunder
         public IEnumerable<Customer> CustomerDropDownList_GetData()
         {
-            return Service.GetCustomers();
+            try
+            {
+                return Service.GetCustomers();
+            }
+            catch
+            {
+                //om undantag fångas så skrivs ett felmeddelande ut
+                CustomValidator error = new CustomValidator();
+                error.IsValid = false;
+                error.ErrorMessage = "Något gick fel när kunderna skulle hämtas.";
+                Page.Validators.Add(error);
+                return null;  
+            }
         }
 
         protected void SaveButton_Click(object sender, EventArgs e)
         {
-            Rental rental = new Rental();
-            int rentalID = 0;
-
-            //hämta rentalid som ska ändras. Om det är 0 så är det en ny rental
-            if (Request.QueryString["Rental"] != null)
+            try
             {
-                rentalID = int.Parse(Request.QueryString["Rental"]);
+                Rental rental = new Rental();
+                int rentalID = 0;
+
+                //hämta rentalid som ska ändras. Om det är 0 så är det en ny rental
+                if (Request.QueryString["Rental"] != null)
+                {
+                    rentalID = int.Parse(Request.QueryString["Rental"]);
+                }
+
+                //hämta alla uppgifter
+                rental.MovieID = int.Parse(MovieDropDownList.SelectedValue);
+                rental.CustomerID = int.Parse(CustomerDropDownList.SelectedValue);
+                rental.RentalDate = DateBox.Text;
+
+                //om det är en uthyrning som ska uppdateras så behåller den sitt gamla id
+                if (rentalID != 0)
+                {
+                    rental.CustomerID = rentalID;
+
+                }
+
+                //uthyrningen sparas
+                Service.SaveRental(rental);
+                Session["SaveComplete"] = true;
+                Response.Redirect("~/Uthyrning/Lista");
+
+            }
+            catch(Exception ex)
+            {
+                //om undantag fångas så skrivs ett felmeddelande ut
+                CustomValidator error = new CustomValidator();
+                error.IsValid = false;
+                error.ErrorMessage = ex.Message;
+                Page.Validators.Add(error);
             }
 
-            //hämta alla uppgifter
-            rental.MovieID = int.Parse(MovieDropDownList.SelectedValue);
-            rental.CustomerID = int.Parse(CustomerDropDownList.SelectedValue);
-            rental.RentalDate = DateBox.Text;
 
-            //om det är en uthyrning som ska uppdateras så behåller den sitt gamla id
-            if (rentalID != 0)
-            {
-                rental.CustomerID = rentalID;
-
-            }
-
-            //uthyrningen sparas
-            Service.SaveRental(rental);
-
-            Response.Redirect("~/uthyrning/lista"); //efter sparningen så skickas man vidare till uthyrningslistan
 
         }
 
