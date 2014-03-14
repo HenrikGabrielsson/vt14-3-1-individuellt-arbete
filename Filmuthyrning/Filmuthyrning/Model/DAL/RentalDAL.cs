@@ -189,7 +189,7 @@ namespace Filmuthyrning.Model.DAL
                     //HyrDatum skickas bara med om det har blivit inställt av användaren.
                     if (!String.IsNullOrEmpty(updRental.RentalDate))
                     {
-                        updateRentalCmd.Parameters.Add("@HyrDatum", SqlDbType.SmallDateTime, 4).Value = updRental;
+                        updateRentalCmd.Parameters.Add("@HyrDatum", SqlDbType.SmallDateTime, 4).Value = updRental.RentalDate;
                     }             
 
                     conn.Open();

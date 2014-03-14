@@ -109,14 +109,14 @@ namespace Filmuthyrning.Pages.CustomerPages
                 Service.SaveCustomer(customer);
 
                 //Ett meddelande om att sparningen fungerade sparas i en session som gör att ett meddelande visas på nästa sida
-                Session["SaveMessage"] = "Sparningen Lyckades!";
+                Session["ChangeMessage"] = "Sparningen Lyckades!";
                 Response.Redirect("~/Kund/Lista", false);
             }
 
             catch(Exception ex)
             {
                 //om undantag fångas så skrivs ett felmeddelande ut
-                Session["SaveMessage"] = ex.Message;
+                Session["ChangeMessage"] = ex.Message;
                 Response.Redirect("~/Kund/Lista", false);
             }
         }

@@ -20,11 +20,15 @@ namespace Filmuthyrning.Pages.CustomerPages
         protected void Page_Load(object sender, EventArgs e)
         {
             //Om man skickas till denna sida efter en lyckad sparning så visas ett meddelande som konfirmerar att det fungerade
-            if (Session["SaveMessage"] != null)
+            if (Session["ChangeMessage"] != null)
             {
-                SuccessLabel.Text = (string)Session["SaveMessage"];
+                SuccessLabel.Text = (string)Session["ChangeMessage"];
                 SuccessLabel.Visible = true;
-                Session["SaveMessage"] = null;
+                Session["ChangeMessage"] = null;
+            }
+            else if (SuccessLabel.Visible)
+            {
+                SuccessLabel.Visible = false;
             }
 
         }
@@ -49,7 +53,18 @@ namespace Filmuthyrning.Pages.CustomerPages
         //Ta bort kunden
         public void ListView_Customer_DeleteItem(int CustomerID)
         {
-            Service.DeleteCustomer(CustomerID);
+            try
+            {
+                Service.DeleteCustomer(CustomerID);
+
+                SuccessLabel.Text = "Borttagningen lyckades";
+                SuccessLabel.Visible = true;
+            }
+            catch
+            {
+                SuccessLabel.Text = "Borttagningen misslyckades";
+                SuccessLabel.Visible = true;
+            }
         }
     }
 }

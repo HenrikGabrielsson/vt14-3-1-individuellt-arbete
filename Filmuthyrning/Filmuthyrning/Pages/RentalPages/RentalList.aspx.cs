@@ -21,13 +21,16 @@ namespace Filmuthyrning.Pages.RentalPages
         protected void Page_Load(object sender, EventArgs e)
         {
             //Om man skickas till denna sida efter en lyckad sparning så visas ett meddelande som konfirmerar att det fungerade
-            if (Session["SaveMessage"] != null)
+            if (Session["ChangeMessage"] != null)
             {
-
-                SuccessLabel.Text = (string)Session["SaveMessage"];
+                SuccessLabel.Text = (string)Session["ChangeMessage"];
                 SuccessLabel.Visible = true;
 
-                Session["SaveMessage"] = null;
+                Session["ChangeMessage"] = null;
+            }
+            else if(SuccessLabel.Visible)
+            {
+                SuccessLabel.Visible = false;
             }
         }
 
@@ -56,17 +59,16 @@ namespace Filmuthyrning.Pages.RentalPages
             try
             {
                 Service.DeleteRental(RentalID);
+
+                SuccessLabel.Text = "Borttagningen lyckades";
+                SuccessLabel.Visible = true;
             }
             catch
             {
                 //om undantag fångas så skrivs ett felmeddelande ut
-                CustomValidator error = new CustomValidator();
-                error.IsValid = false;
-                error.ErrorMessage = "Något gick fel när uthyrningen skulle raderas.";
-                Page.Validators.Add(error); 
+                SuccessLabel.Text = "Borttagningen misslyckades";
+                SuccessLabel.Visible = true;
             }
         }
-
-
     }
 }

@@ -114,7 +114,7 @@ namespace Filmuthyrning.Pages.RentalPages
                 //om det är en uthyrning som ska uppdateras så behåller den sitt gamla id
                 if (rentalID != 0)
                 {
-                    rental.CustomerID = rentalID;
+                    rental.RentalID = rentalID;
 
                 }
 
@@ -122,14 +122,14 @@ namespace Filmuthyrning.Pages.RentalPages
                 Service.SaveRental(rental);
 
                 //Ett meddelande skickas till nästa sida och säger att sparningen lyckades
-                Session["SaveMessage"] = "Sparningen lyckades!";
+                Session["ChangeMessage"] = "Sparningen lyckades!";
                 Response.Redirect("~/Uthyrning/Lista",false);
 
             }
             catch(Exception ex)
             {
                 //om undantag fångas så skrivs ett felmeddelande ut
-                Session["SaveMessage"] = ex.Message;
+                Session["ChangeMessage"] = ex.Message;
                 Response.Redirect("~/Uthyrning/Lista", false);
             }
 

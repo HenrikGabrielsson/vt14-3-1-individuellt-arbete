@@ -74,4 +74,15 @@ h1
     font-weight:bold;
 }
 
-#
+#MainContentPlaceHolder_SuccessLabel
+{
+    display:block;
+    width:100%;
+    height:20px;
+    text-align:center;
+
+    border:1px solid black;
+    background-color:skyblue;
+    color:black;
+
+}
