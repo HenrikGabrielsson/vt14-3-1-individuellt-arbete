@@ -87,25 +87,7 @@ namespace Filmuthyrning.Model.BLL
                 return false;
             }
 
-            //emailadressen får vara tom. Annars ska den valideras.
-            if (!String.IsNullOrWhiteSpace(customer.Email))
-            {
-                //kollar så emailadressen har rätt format
-                Regex emailRegex = new Regex(@".+@.+\..{2,4}");
-                if (!emailRegex.IsMatch(customer.Email))
-                {
-                    errorMessage = "Email-adressen har fel format!";
-                    return false;
-                }
-
-                //kollar så emailadressen inte är för långt
-                if (customer.Email.Length > 50)
-                {
-                    errorMessage = "Emailadressen får vara högst 50 tecken lång!";
-                    return false;
-                }
-            }
-
+            //Om valideringen går bra
             errorMessage = "";
             return true;
         }

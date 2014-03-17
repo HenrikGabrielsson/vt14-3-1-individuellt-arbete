@@ -17,7 +17,6 @@
                         <th>Förnamn</th>
                         <th>Efternamn</th>
                         <th>Telefonnummer</th>
-                        <th>Email</th>
                     </tr>
                     <asp:PlaceHolder ID="ItemPlaceHolder" runat="server"></asp:PlaceHolder>
                 </table>
@@ -27,7 +26,6 @@
                     <td><%# Item.FirstName  %></td>
                     <td><%# Item.LastName  %></td>
                     <td><%# Item.PhoneNumber  %></td>
-                    <td><%# Item.Email  %></td>
                     <td><asp:HyperLink runat="server" 
                         NavigateUrl='<%# System.IO.Path.Combine("~","Kund","Spara",String.Format("?Customer={0}",Item.CustomerID.ToString())) %>'>
                         Uppdatera

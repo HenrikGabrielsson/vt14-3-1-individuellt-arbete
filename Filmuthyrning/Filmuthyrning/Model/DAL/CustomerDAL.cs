@@ -37,7 +37,6 @@ namespace Filmuthyrning.Model.DAL
                         int fNameIndex = reader.GetOrdinal("Förnamn");
                         int lNameIndex = reader.GetOrdinal("Efternamn");
                         int phoneNumberIndex = reader.GetOrdinal("Telefon");
-                        int emailIndex = reader.GetOrdinal("Email");
 
                         //hämtar varje tabellrad för sig
                         while (reader.Read())
@@ -49,10 +48,7 @@ namespace Filmuthyrning.Model.DAL
                             customer.FirstName = reader.GetString(fNameIndex);
                             customer.LastName = reader.GetString(lNameIndex);
                             customer.PhoneNumber = reader.GetString(phoneNumberIndex);
-                            if(!reader.IsDBNull(emailIndex)) //kollar så email inte är null för att undvika exception
-                            {
-                                customer.Email = reader.GetString(emailIndex);
-                            }
+
 
                             customers.Add(customer);
                         }
@@ -96,7 +92,6 @@ namespace Filmuthyrning.Model.DAL
                         int fNameIndex = reader.GetOrdinal("Förnamn");
                         int lNameIndex = reader.GetOrdinal("Efternamn");
                         int phoneNumberIndex = reader.GetOrdinal("Telefon");
-                        int emailIndex = reader.GetOrdinal("Email");
 
                         //hämtar tabellraden med samma ID som argumentet till funktionen 
                         if (reader.Read())
@@ -106,10 +101,6 @@ namespace Filmuthyrning.Model.DAL
                             customer.FirstName = reader.GetString(fNameIndex);
                             customer.LastName = reader.GetString(lNameIndex);
                             customer.PhoneNumber = reader.GetString(phoneNumberIndex);
-                            if (!reader.IsDBNull(emailIndex)) //kollar så email inte är null för att undvika exception
-                            {
-                                customer.Email = reader.GetString(emailIndex);
-                            }
 
                             return customer;
                         }
@@ -180,8 +171,7 @@ namespace Filmuthyrning.Model.DAL
                     updateCustomerCmd.Parameters.Add("@KundID", SqlDbType.Int, 4).Value = updCustomer.CustomerID;
                     updateCustomerCmd.Parameters.Add("@FNamn", SqlDbType.VarChar, 50).Value = updCustomer.FirstName;
                     updateCustomerCmd.Parameters.Add("@ENamn", SqlDbType.VarChar, 50).Value = updCustomer.LastName;
-                    updateCustomerCmd.Parameters.Add("@Telefon", SqlDbType.VarChar, 10).Value = updCustomer.PhoneNumber;
-                    updateCustomerCmd.Parameters.Add("@Email", SqlDbType.VarChar, 50).Value = updCustomer.Email;                    
+                    updateCustomerCmd.Parameters.Add("@Telefon", SqlDbType.VarChar, 10).Value = updCustomer.PhoneNumber;                  
 
                     conn.Open();
 

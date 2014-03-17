@@ -25,7 +25,7 @@
                     <td><%# Item.Title %></td>
                     <td><%# Item.Year %></td>
                     <td><%# Item.Genre %></td>
-                    <td><%# Item.PriceGroupID %></td>
+                    <td><%# Item.PriceGroupText %></td>
                     <td><%# Item.RentalPeriod %></td>
                     <td><%# Item.Quantity %></td>
                 </tr>

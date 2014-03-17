@@ -45,7 +45,6 @@ namespace Filmuthyrning.Pages.CustomerPages
                         fNameBox.Text = customer.FirstName;
                         lNameBox.Text = customer.LastName;
                         phoneBox.Text = customer.PhoneNumber;
-                        emailBox.Text = customer.Email;
                     }
 
                     catch
@@ -85,7 +84,6 @@ namespace Filmuthyrning.Pages.CustomerPages
                 customer.FirstName = fNameBox.Text;
                 customer.LastName = lNameBox.Text;
                 customer.PhoneNumber = phoneBox.Text;
-                customer.Email = emailBox.Text;
 
                 //om det är en kund som ska uppdateras så behåller den sitt gamla id
                 if (customerID != 0)
