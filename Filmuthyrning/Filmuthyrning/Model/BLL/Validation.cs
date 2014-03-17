@@ -25,7 +25,6 @@ namespace Filmuthyrning.Model.BLL
                 return false;
             }
 
-
             //Kollar ifall datumet är valt
             if(!String.IsNullOrWhiteSpace(rental.RentalDate))
             {
@@ -84,6 +83,14 @@ namespace Filmuthyrning.Model.BLL
             if(customer.PhoneNumber.Length > 10)
             {
                 errorMessage="Telefonnumret är för långt. Max 10 tecken är tillåtet.";
+                return false;
+            }
+
+            //kollar så telefonnumret har rätt format
+            Regex phoneregex = new Regex("^[0-9]{1,10}$");
+            if (!phoneregex.IsMatch(customer.PhoneNumber))
+            {
+                errorMessage = "Fel format på telefonnumret!";
                 return false;
             }
 

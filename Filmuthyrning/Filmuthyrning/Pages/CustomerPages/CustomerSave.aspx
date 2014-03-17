@@ -19,6 +19,6 @@
     <label for="phoneBox">Telefonnummer:</label><asp:TextBox ID="phoneBox" runat="server"></asp:TextBox>
     <%-- Validering --%>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="Du måste fylla i ett telefonnummer!" Text="*" ControlToValidate="phoneBox"></asp:RequiredFieldValidator>
-        <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ErrorMessage="Telefonnumret får inte vara längre än 10 tecken!" Display="Dynamic" Text="*" ValidationExpression="^.{0,10}$" ControlToValidate="phoneBox"></asp:RegularExpressionValidator>    
+        <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ErrorMessage="Telefonnumret får inte vara längre än 10 tecken! och får enbart bestå av siffror" Display="Dynamic" Text="*" ValidationExpression="^[0-9]{1,10}$" ControlToValidate="phoneBox"></asp:RegularExpressionValidator>    
     <asp:Button ID="SaveButton" runat="server" OnClick="SaveButton_Click" />
 </asp:Content>
