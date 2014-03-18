@@ -9,6 +9,8 @@
   
         <%-- Om en sparning lyckas så visas detta meddelande--%>
             <asp:Label ID="SuccessLabel" runat="server" Visible="false" />
+
+        <%-- Här hamnar alla kunder  --%>
         <asp:ListView ID="ListView_Customer" ItemType="Filmuthyrning.Model.BLL.Customer" SelectMethod="ListView_Customer_GetData" DataKeyNames="CustomerID" runat="server" 
             DeleteMethod="ListView_Customer_DeleteItem">
             <LayoutTemplate>

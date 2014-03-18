@@ -5,7 +5,11 @@
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
-        <asp:ValidationSummary ID="ValidationSummary1" runat="server" />    
+
+        <%-- Problem vid hämtningen skrivs ut här --%>
+        <asp:ValidationSummary ID="ValidationSummary1" runat="server" />   
+    
+        <%-- Lista med alla filmer--%> 
         <asp:ListView ID="MovieListView" runat="server" ItemType="Filmuthyrning.Model.BLL.Movie" SelectMethod="MovieListView_GetData">
             <LayoutTemplate>
                 <table>
