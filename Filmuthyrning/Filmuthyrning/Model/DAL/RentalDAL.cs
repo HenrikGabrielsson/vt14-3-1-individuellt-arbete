@@ -52,8 +52,8 @@ namespace Filmuthyrning.Model.DAL
                             rental.CustomerID = reader.GetInt32(customerIDIndex);
                             rental.firstName = reader.GetString(firstNameIndex);
                             rental.lastName = reader.GetString(lastNameIndex);
-                            rental.RentalDate = reader.GetDateTime(rentalDateindex).ToString();
-                            rental.ReturnDate = reader.GetDateTime(returnDateindex).ToString();
+                            rental.RentalDate = reader.GetDateTime(rentalDateindex);
+                            rental.ReturnDate = reader.GetDateTime(returnDateindex);
 
                             rentals.Add(rental);
                         }
@@ -109,8 +109,8 @@ namespace Filmuthyrning.Model.DAL
                             rental.CustomerID = reader.GetInt32(customerIDIndex);
                             rental.firstName = reader.GetString(firstNameIndex);
                             rental.lastName = reader.GetString(lastNameIndex);
-                            rental.RentalDate = reader.GetDateTime(rentalDateindex).ToString();
-                            rental.ReturnDate = reader.GetDateTime(returnDateindex).ToString(); 
+                            rental.RentalDate = reader.GetDateTime(rentalDateindex);
+                            rental.ReturnDate = reader.GetDateTime(returnDateindex); 
                         }
                     }
                 }
@@ -140,7 +140,7 @@ namespace Filmuthyrning.Model.DAL
                     newRentalCmd.Parameters.Add("@KundID", SqlDbType.Int, 4).Value = newRental.CustomerID;
 
                     //HyrDatum skickas bara med om det har blivit inställt av användaren.
-                    if(!String.IsNullOrEmpty(newRental.RentalDate))
+                    if(newRental.RentalDate != null)
                     {
                         newRentalCmd.Parameters.Add("@HyrDatum", SqlDbType.SmallDateTime, 4).Value = newRental.RentalDate;
                     }
@@ -187,7 +187,7 @@ namespace Filmuthyrning.Model.DAL
                     updateRentalCmd.Parameters.Add("@KundID", SqlDbType.Int, 4).Value = updRental.CustomerID;
 
                     //HyrDatum skickas bara med om det har blivit inställt av användaren.
-                    if (!String.IsNullOrEmpty(updRental.RentalDate))
+                    if (updRental.RentalDate != null)
                     {
                         updateRentalCmd.Parameters.Add("@HyrDatum", SqlDbType.SmallDateTime, 4).Value = updRental.RentalDate;
                     }             

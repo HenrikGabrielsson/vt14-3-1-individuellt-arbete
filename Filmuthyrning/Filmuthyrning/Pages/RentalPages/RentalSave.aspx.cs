@@ -37,11 +37,8 @@ namespace Filmuthyrning.Pages.RentalPages
                 {
                     rental = Service.getRentalByID(rentalID);
 
-                    //regex för att plocka ut datum och inte tid
-                    Regex dateRegex = new Regex("\\s[0-9]{2}:[0-9]{2}:[0-9]{2}");
-
                     //sätt de gamla värdena i formuläret
-                    DateBox.Text = dateRegex.Split(rental.RentalDate)[0];
+                    DateBox.Text = rental.RentalDate.ToString("yyyy-MM-dd");
                     MovieDropDownList.SelectedValue = rental.MovieID.ToString();
                     CustomerDropDownList.SelectedValue = rental.CustomerID.ToString();
 
@@ -51,6 +48,7 @@ namespace Filmuthyrning.Pages.RentalPages
                 //Om det är en ny uthyrning
                 else
                 {
+                    DateBox.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     SaveButton.Text = "Lägg till";
                 }
             }
@@ -109,7 +107,7 @@ namespace Filmuthyrning.Pages.RentalPages
                 //hämta alla uppgifter
                 rental.MovieID = int.Parse(MovieDropDownList.SelectedValue);
                 rental.CustomerID = int.Parse(CustomerDropDownList.SelectedValue);
-                rental.RentalDate = DateBox.Text;
+                rental.RentalDate = Convert.ToDateTime(DateBox.Text);
 
                 //om det är en uthyrning som ska uppdateras så behåller den sitt gamla id
                 if (rentalID != 0)

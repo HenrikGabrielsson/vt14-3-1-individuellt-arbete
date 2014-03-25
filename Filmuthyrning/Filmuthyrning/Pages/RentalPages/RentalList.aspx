@@ -29,8 +29,8 @@
                 <tr>
                     <td><%# Item.MovieTitle %></td>
                     <td><%# String.Format("{0}, {1}",Item.lastName, Item.firstName) %></td>
-                    <td><%# Item.RentalDate.Split(' ')[0] %></td>
-                    <td><%# Item.ReturnDate.Split(' ')[0] %></td>
+                    <td><%# Item.RentalDate %></td>
+                    <td><%# Item.ReturnDate %></td>
                     <td><asp:HyperLink runat="server" 
                         NavigateUrl='<%# System.IO.Path.Combine("~","Uthyrning","Spara",String.Format("?Rental={0}",Item.RentalID.ToString())) %>'>
                         Uppdatera

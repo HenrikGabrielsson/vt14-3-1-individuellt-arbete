@@ -25,7 +25,7 @@ namespace Filmuthyrning.Model.BLL
                 return false;
             }
 
-            //Kollar ifall datumet är valt
+            /*//Kollar ifall datumet är valt 
             if(!String.IsNullOrWhiteSpace(rental.RentalDate))
             {
                 //kollar så datumet har rätt format
@@ -35,7 +35,7 @@ namespace Filmuthyrning.Model.BLL
                     errorMessage = "Fel format på hyrdatumet!";
                     return false;
                 }
-            }
+            }*/
 
             errorMessage = "";
             return true;

@@ -14,7 +14,7 @@ namespace Filmuthyrning.Model.BLL
         public int CustomerID { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
-        public string RentalDate { get; set; }
-        public string ReturnDate { get; set; }
+        public DateTime RentalDate { get; set; }
+        public DateTime ReturnDate { get; set; }
     }
 }
