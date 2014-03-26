@@ -9,11 +9,17 @@ namespace Filmuthyrning.Model.BLL
     public class Rental
     {
         public int RentalID { get; set; }
+
+        [Required(ErrorMessage = "En film måste väljas")]
         public int MovieID { get; set; }
         public string MovieTitle { get; set; }
+
+        [Required(ErrorMessage = "En film måste väljas")]
         public int CustomerID { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
+
+        [DataType(DataType.DateTime,ErrorMessage="Inmatningen kunde inte tolkas som ett datum")]
         public DateTime RentalDate { get; set; }
         public DateTime ReturnDate { get; set; }
     }

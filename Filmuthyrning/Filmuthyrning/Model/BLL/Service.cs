@@ -54,34 +54,28 @@ namespace Filmuthyrning.Model.BLL
         //skapa / uppdatera kund
         public void SaveCustomer(Customer customer)
         {
-            Validation val = new Validation();
+            //Här samlas alla valideringsfel
+            ICollection<ValidationResult> validationResults;
 
-            string errorMessage ="";
-
-            try
+            //Om valideringen inte är godkänd
+            if(!customer.Validate(out validationResults)) 
             {
-                if (val.ValidateCustomer(customer, out errorMessage))
-                {
-                    //ny kund (skickar tillbaka customerID)
-                    if (customer.CustomerID == 0)
-                    {
-                        CustomerDAL.NewCustomer(customer);
-                    }
-
-                    //uppdaterad kund (skickar tillbaka antal ändrade rader)
-                    else
-                    {
-                        CustomerDAL.UpdateCustomer(customer);
-                    }
-                }
-                else
-                {
-                    throw new ApplicationException(errorMessage);
-                }
+                //Ett undantag kastas och alla felmeddelanden följer med
+                var ex = new ValidationException("Kunden klarade inte valideringen.");
+                ex.Data.Add("ValidationResults", validationResults);
+                throw ex;
             }
-            catch
+                
+            //ny kund (skickar tillbaka customerID)
+            if (customer.CustomerID == 0)
             {
-                throw new ApplicationException(errorMessage);
+                CustomerDAL.NewCustomer(customer);
+            }
+
+            //uppdaterad kund (skickar tillbaka antal ändrade rader)
+            else
+            {
+                CustomerDAL.UpdateCustomer(customer);
             }
 
         }
@@ -133,36 +127,29 @@ namespace Filmuthyrning.Model.BLL
         //skapa / uppdatera Uthyrning
         public void SaveRental(Rental rental)
         {
-            //Validering
-            Validation val = new Validation();
-            string errorMessage ="";
 
-            try
+            //Här samlas alla valideringsfel
+            ICollection<ValidationResult> validationResults;
+
+            //Om valideringen inte är godkänd
+            if (!rental.Validate(out validationResults))
             {
-                if (val.ValidateRental(rental, out errorMessage))
-                {
-                    //ny uthyrning (skickar tillbaka rentalID)
-                    if (rental.RentalID == 0)
-                    {
-                        RentalDAL.NewRental(rental);
-                    }
-
-                    //uppdaterad uthyrning (skickar tillbaka antal ändrade rader)
-                    else
-                    {
-                        RentalDAL.UpdateRental(rental);
-                    }
-                }
-
-                //Om valideringen inte är godkänd
-                else
-                {
-                    throw new ApplicationException(errorMessage);
-                }
+                //Ett undantag kastas och alla felmeddelanden följer med
+                var ex = new ValidationException("Uthyrningen klarade inte valideringen.");
+                ex.Data.Add("ValidationResults", validationResults);
+                throw ex;
             }
-            catch
+
+            //ny uthyrning (skickar tillbaka rentalID)
+            if (rental.RentalID == 0)
             {
-                throw new ApplicationException(errorMessage);
+                RentalDAL.NewRental(rental);
+            }
+
+            //uppdaterad uthyrning (skickar tillbaka antal ändrade rader)
+            else
+            {
+                RentalDAL.UpdateRental(rental);
             }
         }
 

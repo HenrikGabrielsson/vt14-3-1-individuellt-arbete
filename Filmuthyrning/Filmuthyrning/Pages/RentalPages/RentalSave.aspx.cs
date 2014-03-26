@@ -113,12 +113,13 @@ namespace Filmuthyrning.Pages.RentalPages
                 if (rentalID != 0)
                 {
                     rental.RentalID = rentalID;
-
                 }
 
                 //uthyrningen sparas
-                Service.SaveRental(rental);
-
+                if (ModelState.IsValid)
+                {
+                    Service.SaveRental(rental);
+                }
                 //Ett meddelande skickas till nästa sida och säger att sparningen lyckades
                 Session["ChangeMessage"] = "Sparningen lyckades!";
                 Response.Redirect("~/Uthyrning/Lista",false);

@@ -104,8 +104,10 @@ namespace Filmuthyrning.Pages.CustomerPages
             try
             {
                 //kunden sparas
-                Service.SaveCustomer(customer);
-
+                if (ModelState.IsValid)
+                {
+                    Service.SaveCustomer(customer);
+                }
                 //Ett meddelande om att sparningen fungerade sparas i en session som gör att ett meddelande visas på nästa sida
                 Session["ChangeMessage"] = "Sparningen Lyckades!";
                 Response.Redirect("~/Kund/Lista", false);

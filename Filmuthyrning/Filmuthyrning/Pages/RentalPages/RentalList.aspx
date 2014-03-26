@@ -29,8 +29,8 @@
                 <tr>
                     <td><%# Item.MovieTitle %></td>
                     <td><%# String.Format("{0}, {1}",Item.lastName, Item.firstName) %></td>
-                    <td><%# Item.RentalDate %></td>
-                    <td><%# Item.ReturnDate %></td>
+                    <td><%# Item.RentalDate.ToString("yy-MM-dd") %></td>
+                    <td><%# Item.ReturnDate.ToString("yy-MM-dd") %></td>
                     <td><asp:HyperLink runat="server" 
                         NavigateUrl='<%# System.IO.Path.Combine("~","Uthyrning","Spara",String.Format("?Rental={0}",Item.RentalID.ToString())) %>'>
                         Uppdatera
