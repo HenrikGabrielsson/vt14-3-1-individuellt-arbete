@@ -117,8 +117,38 @@ namespace Filmuthyrning.Pages.RentalPages
                     {
                         rental.RentalID = rentalID;
                     }
-                }
+                
 
+                    try
+                    {
+                        //uthyrningen sparas
+                        Service.SaveRental(rental);
+                        //Ett meddelande skickas till nästa sida och säger att sparningen lyckades
+                        Session["ChangeMessage"] = "Sparningen lyckades!";
+                        Response.Redirect("~/Uthyrning/Lista", false);
+                    }
+                    catch (Exception ex)
+                    {
+                        //hämtar felmeddelanden som kan ha skapats av data annotations i customer-klassen
+                        var valResults = ex.Data["ValidationResults"] as IEnumerable<ValidationResult>;
+
+                        if (valResults != null) //Om det finns felmeddelanden
+                        {
+                            foreach (var valResult in valResults) 
+                            {
+                                foreach (var memberName in valResult.MemberNames)
+                                {
+                                    ModelState.AddModelError(memberName, valResult.ErrorMessage); //skriver ut varje felmeddelande
+                                }
+                            }
+                        }
+                        else //Andra undantag kastas vidare
+                        {
+                            throw ex;
+                        }
+                    }
+
+                }
                 catch
                 {
                     //om undantag fångas så skrivs ett felmeddelande ut
@@ -126,31 +156,6 @@ namespace Filmuthyrning.Pages.RentalPages
                     error.IsValid = false;
                     error.ErrorMessage = "Något gick fel när uppgifterna skulle sparas";
                     Page.Validators.Add(error);
-                }
-
-                try
-                {
-                    //uthyrningen sparas
-                    Service.SaveRental(rental);
-                    //Ett meddelande skickas till nästa sida och säger att sparningen lyckades
-                    Session["ChangeMessage"] = "Sparningen lyckades!";
-                    Response.Redirect("~/Uthyrning/Lista", false);
-                }
-                catch (Exception ex)
-                {
-                    //hämtar felmeddelanden som kan ha skapats av data annotations i customer-klassen
-                    var valResults = ex.Data["ValidationResults"] as IEnumerable<ValidationResult>;
-
-                    if (valResults != null) //Om det finns felmeddelanden
-                    {
-                        foreach (var valResult in valResults) 
-                        {
-                            foreach (var memberName in valResult.MemberNames)
-                            {
-                                ModelState.AddModelError(memberName, valResult.ErrorMessage); //skriver ut varje felmeddelande
-                            }
-                        }
-                    }
                 }
             }
 

@@ -22,6 +22,8 @@
     <%--Hyrdatum--%>
     <label for="DateBox">HyrDatum:</label>
     <asp:TextBox ID="DateBox" type="date" runat="server"></asp:TextBox>
-        
+    <%-- Validering--%>      
+        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Datumet hade inte rätt format" Display="Dynamic" Text="*" ControlToValidate="DateBox" ValidationExpression="^[0-9]{4}-[0-9]{2}-[0-9]{2}$"></asp:RegularExpressionValidator>                
+        <asp:RangeValidator ID="RangeValidator1" runat="server" ErrorMessage="Datumet måste vara mellan 1900-01-01 och 2079-06-06" Text="*" Display="Dynamic" ControlToValidate="Datebox" Type="Date" MaximumValue="2079-06-06" MinimumValue="1900-01-01"></asp:RangeValidator>                   
     <asp:Button ID="SaveButton" runat="server" OnClick="SaveButton_Click" />
 </asp:Content>

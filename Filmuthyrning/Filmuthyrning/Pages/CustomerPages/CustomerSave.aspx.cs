@@ -95,6 +95,31 @@ namespace Filmuthyrning.Pages.CustomerPages
                         customer.CustomerID = customerID;
 
                     }
+                
+                    try
+                    {
+                        Service.SaveCustomer(customer);
+                        //Ett meddelande om att sparningen fungerade sparas i en session som gör att ett meddelande visas på nästa sida
+                        Session["ChangeMessage"] = "Sparningen Lyckades!";
+                        Response.Redirect("~/Kund/Lista", false);
+                    }
+
+                    catch (Exception ex)
+                    {
+                        //hämtar felmeddelanden som kan ha skapats av data annotations i customer-klassen
+                        var valResults = ex.Data["ValidationResults"] as IEnumerable<ValidationResult>;
+
+                        if(valResults != null) //Om det finns felmeddelanden
+                        {
+                            foreach(var valResult in valResults)
+                            {
+                                foreach(var memberName in valResult.MemberNames)
+                                {
+                                    ModelState.AddModelError(memberName, valResult.ErrorMessage); //skriver ut varje felmeddelande
+                                }
+                            }
+                        }
+                    }
                 }
                 catch
                 {
@@ -103,34 +128,6 @@ namespace Filmuthyrning.Pages.CustomerPages
                     error.IsValid = false;
                     error.ErrorMessage = "Något gick fel när uppgifterna skulle sparas";
                     Page.Validators.Add(error);
-                }
-
-                try
-                {
-
-                    Service.SaveCustomer(customer);
-                    //Ett meddelande om att sparningen fungerade sparas i en session som gör att ett meddelande visas på nästa sida
-                    Session["ChangeMessage"] = "Sparningen Lyckades!";
-                    Response.Redirect("~/Kund/Lista", false);
-
-                }
-
-
-                catch (Exception ex)
-                {
-                    //hämtar felmeddelanden som kan ha skapats av data annotations i customer-klassen
-                    var valResults = ex.Data["ValidationResults"] as IEnumerable<ValidationResult>;
-
-                    if(valResults != null) //Om det finns felmeddelanden
-                    {
-                        foreach(var valResult in valResults)
-                        {
-                            foreach(var memberName in valResult.MemberNames)
-                            {
-                                ModelState.AddModelError(memberName, valResult.ErrorMessage); //skriver ut varje felmeddelande
-                            }
-                        }
-                    }
                 }
 
             }
