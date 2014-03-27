@@ -20,19 +20,21 @@ namespace Filmuthyrning.Pages.RentalPages
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            Rental rental;
+            int rentalID = 0;
+
+            //hämta uthyrning som ska ändras. Om det är 0 så är det en ny uthyrning
+            if (Request.QueryString["Rental"] != null)
+            {
+                rentalID = int.Parse(Request.QueryString["Rental"]);
+            }
+
+            //Sätter texten på knappen
+            SaveButton.Text = rentalID != 0 ? "Spara ändringar" : "Lägg till";
+
+
             if (!IsPostBack)
             {
-
-                Rental rental;
-                int rentalID = 0;
-
-                //hämta uthyrning som ska ändras. Om det är 0 så är det en ny uthyrning
-                if (Request.QueryString["Rental"] != null)
-                {
-                    rentalID = int.Parse(Request.QueryString["Rental"]);
-                }
-
-
                 //Om det är en uthyrning som ska uppdateras.
                 if (rentalID != 0)
                 {
@@ -42,15 +44,12 @@ namespace Filmuthyrning.Pages.RentalPages
                     DateBox.Text = rental.RentalDate.ToString("yyyy-MM-dd");
                     MovieDropDownList.SelectedValue = rental.MovieID.ToString();
                     CustomerDropDownList.SelectedValue = rental.CustomerID.ToString();
-
-                    SaveButton.Text = "Spara ändringar";
                 }
 
                 //Om det är en ny uthyrning
                 else
                 {
                     DateBox.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                    SaveButton.Text = "Lägg till";
                 }
             }
 
