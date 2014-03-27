@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Filmuthyrning.Model.BLL;
 using System.Text.RegularExpressions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Filmuthyrning.Pages.RentalPages
 {
@@ -93,43 +94,65 @@ namespace Filmuthyrning.Pages.RentalPages
 
         protected void SaveButton_Click(object sender, EventArgs e)
         {
-            try
+            if (IsValid)
             {
+
                 Rental rental = new Rental();
                 int rentalID = 0;
 
-                //hämta rentalid som ska ändras. Om det är 0 så är det en ny rental
-                if (Request.QueryString["Rental"] != null)
+                try
                 {
-                    rentalID = int.Parse(Request.QueryString["Rental"]);
+                    //hämta rentalid som ska ändras. Om det är 0 så är det en ny rental
+                    if (Request.QueryString["Rental"] != null)
+                    {
+                        rentalID = int.Parse(Request.QueryString["Rental"]);
+                    }
+
+                    //hämta alla uppgifter
+                    rental.MovieID = int.Parse(MovieDropDownList.SelectedValue);
+                    rental.CustomerID = int.Parse(CustomerDropDownList.SelectedValue);
+                    rental.RentalDate = String.IsNullOrWhiteSpace(DateBox.Text) ? DateTime.Now : Convert.ToDateTime(DateBox.Text); //skickar med dagens datum(och tid) om textrutan är tom.
+
+                    //om det är en uthyrning som ska uppdateras så behåller den sitt gamla id
+                    if (rentalID != 0)
+                    {
+                        rental.RentalID = rentalID;
+                    }
                 }
 
-                //hämta alla uppgifter
-                rental.MovieID = int.Parse(MovieDropDownList.SelectedValue);
-                rental.CustomerID = int.Parse(CustomerDropDownList.SelectedValue);
-                rental.RentalDate = Convert.ToDateTime(DateBox.Text);
-
-                //om det är en uthyrning som ska uppdateras så behåller den sitt gamla id
-                if (rentalID != 0)
+                catch
                 {
-                    rental.RentalID = rentalID;
+                    //om undantag fångas så skrivs ett felmeddelande ut
+                    CustomValidator error = new CustomValidator();
+                    error.IsValid = false;
+                    error.ErrorMessage = "Något gick fel när uppgifterna skulle sparas";
+                    Page.Validators.Add(error);
                 }
 
-                //uthyrningen sparas
-                if (ModelState.IsValid)
+                try
                 {
+                    //uthyrningen sparas
                     Service.SaveRental(rental);
+                    //Ett meddelande skickas till nästa sida och säger att sparningen lyckades
+                    Session["ChangeMessage"] = "Sparningen lyckades!";
+                    Response.Redirect("~/Uthyrning/Lista", false);
                 }
-                //Ett meddelande skickas till nästa sida och säger att sparningen lyckades
-                Session["ChangeMessage"] = "Sparningen lyckades!";
-                Response.Redirect("~/Uthyrning/Lista",false);
+                catch (Exception ex)
+                {
+                    //hämtar felmeddelanden som kan ha skapats av data annotations i customer-klassen
+                    var valResults = ex.Data["ValidationResults"] as IEnumerable<ValidationResult>;
 
-            }
-            catch(Exception ex)
-            {
-                //om undantag fångas så skrivs ett felmeddelande ut
-                Session["ChangeMessage"] = ex.Message;
-                Response.Redirect("~/Uthyrning/Lista", false);
+                    if (valResults != null) //Om det finns felmeddelanden
+                    {
+                        foreach (var valResult in valResults) 
+                        {
+                            foreach (var memberName in valResult.MemberNames)
+                            {
+                                ModelState.AddModelError(memberName, valResult.ErrorMessage); //skriver ut varje felmeddelande
+                            }
+                        }
+                    }
+                }
             }
 
 

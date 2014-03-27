@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Filmuthyrning.Model.BLL;
+using System.ComponentModel.DataAnnotations;
 
 namespace Filmuthyrning.Pages.CustomerPages
 {
@@ -69,59 +70,71 @@ namespace Filmuthyrning.Pages.CustomerPages
 
         protected void SaveButton_Click(object sender, EventArgs e)
         {
-            Customer customer = new Customer();
-            int customerID = 0;
 
-            try
+            if (IsValid)
             {
-                //hämta kundid som ska ändras. Om det är 0 så är det en ny kund
-                if (Request.QueryString["Customer"] != null)
+                Customer customer = new Customer();
+                int customerID = 0;
+
+                try
                 {
-                    customerID = int.Parse(Request.QueryString["Customer"]);
+                    //hämta kundid som ska ändras. Om det är 0 så är det en ny kund
+                    if (Request.QueryString["Customer"] != null)
+                    {
+                        customerID = int.Parse(Request.QueryString["Customer"]);
+                    }
+
+                    //hämta alla uppgifter
+                    customer.FirstName = fNameBox.Text;
+                    customer.LastName = lNameBox.Text;
+                    customer.PhoneNumber = phoneBox.Text;
+
+                    //om det är en kund som ska uppdateras så behåller den sitt gamla id
+                    if (customerID != 0)
+                    {
+                        customer.CustomerID = customerID;
+
+                    }
+                }
+                catch
+                {
+                    //om undantag fångas så skrivs ett felmeddelande ut
+                    CustomValidator error = new CustomValidator();
+                    error.IsValid = false;
+                    error.ErrorMessage = "Något gick fel när uppgifterna skulle sparas";
+                    Page.Validators.Add(error);
                 }
 
-                //hämta alla uppgifter
-                customer.FirstName = fNameBox.Text;
-                customer.LastName = lNameBox.Text;
-                customer.PhoneNumber = phoneBox.Text;
-
-                //om det är en kund som ska uppdateras så behåller den sitt gamla id
-                if (customerID != 0)
+                try
                 {
-                    customer.CustomerID = customerID;
 
-                }
-            }
-            catch
-            {
-                //om undantag fångas så skrivs ett felmeddelande ut
-                CustomValidator error = new CustomValidator();
-                error.IsValid = false;
-                error.ErrorMessage = "Något gick fel när uppgifterna skulle sparas";
-                Page.Validators.Add(error);                
-            }
-
-            try
-            {
-                //kunden sparas
-                if (ModelState.IsValid)
-                {
                     Service.SaveCustomer(customer);
-                }
-                //Ett meddelande om att sparningen fungerade sparas i en session som gör att ett meddelande visas på nästa sida
-                Session["ChangeMessage"] = "Sparningen Lyckades!";
-                Response.Redirect("~/Kund/Lista", false);
-            }
+                    //Ett meddelande om att sparningen fungerade sparas i en session som gör att ett meddelande visas på nästa sida
+                    Session["ChangeMessage"] = "Sparningen Lyckades!";
+                    Response.Redirect("~/Kund/Lista", false);
 
-            catch(Exception ex)
-            {
-                //om undantag fångas så skrivs ett felmeddelande ut
-                Session["ChangeMessage"] = ex.Message;
-                Response.Redirect("~/Kund/Lista", false);
+                }
+
+
+                catch (Exception ex)
+                {
+                    //hämtar felmeddelanden som kan ha skapats av data annotations i customer-klassen
+                    var valResults = ex.Data["ValidationResults"] as IEnumerable<ValidationResult>;
+
+                    if(valResults != null) //Om det finns felmeddelanden
+                    {
+                        foreach(var valResult in valResults)
+                        {
+                            foreach(var memberName in valResult.MemberNames)
+                            {
+                                ModelState.AddModelError(memberName, valResult.ErrorMessage); //skriver ut varje felmeddelande
+                            }
+                        }
+                    }
+                }
+
             }
         }
-
-
-        
+ 
     }
 }
